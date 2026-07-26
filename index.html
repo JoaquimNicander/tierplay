@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tierplay — Starta ett eget stege-community för racketsport</title>
+<meta name="description" content="Tierplay hjälper dig starta ett eget stege-community för racketsport — som bastadstegen.se. Jämna matcher, tydliga tiers, levande klubbkänsla.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjggMTI4IiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCI+CjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0idHBncmFkIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzJFNjNFNyIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzRFOUJGQSIvPgo8L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KPHJlY3Qgd2lkdGg9IjEyOCIgaGVpZ2h0PSIxMjgiIHJ4PSIyOCIgZmlsbD0iIzBDMTIyNiIvPgo8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMCwzMCkgc2NhbGUoMS4wKSI+CiAgPHJlY3QgeD0iMCIgIHk9IjAiICB3aWR0aD0iNjQiIGhlaWdodD0iMTYiIHJ4PSI4IiBmaWxsPSJ1cmwoI3RwZ3JhZCkiLz4KICA8cmVjdCB4PSIwIiAgeT0iMjYiIHdpZHRoPSI0NiIgaGVpZ2h0PSIxNiIgcng9IjgiIGZpbGw9IiMzRTdCRkEiIG9wYWNpdHk9IjAuNjIiLz4KICA8cmVjdCB4PSIwIiAgeT0iNTIiIHdpZHRoPSIzMCIgaGVpZ2h0PSIxNiIgcng9IjgiIGZpbGw9IiMzRTdCRkEiIG9wYWNpdHk9IjAuMzQiLz4KICA8Y2lyY2xlIGN4PSI3OCIgY3k9IjgiIHI9IjkiIGZpbGw9IiNDNkY1MzIiLz4KICA8cGF0aCBkPSJNIDYwIDYwIFEgNzggNDQgNzggMjIiIHN0cm9rZT0iI0M2RjUzMiIgc3Ryb2tlLW9wYWNpdHk9IjAuNTUiIHN0cm9rZS13aWR0aD0iMy41IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1kYXNoYXJyYXk9IjEgOCIvPgo8L2c+Cjwvc3ZnPg==">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;1,400&family=Archivo+Black&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B1120;
+    --bg2:#0F1730;
+    --panel:#16203A;
+    --line:rgba(235,242,250,.12);
+    --chalk:#F0F5FA;
+    --muted:#9AA8BC;
+    --clay:#1FBF6B;
+    --clay2:#A8E92E;
+    --grad:linear-gradient(100deg,#1FBF6B,#A8E92E);
+    --radius:18px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--chalk);
+    font-family:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;
+    font-size:17px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--clay);color:#fff}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 24px}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    background:rgba(11,17,32,.72);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{display:flex;align-items:center;gap:10px;font-family:'Archivo Black',sans-serif;font-size:20px;letter-spacing:.04em;text-transform:uppercase}
+  .logo-mark{display:inline-flex;flex-direction:column;gap:2.5px}
+  .logo-mark span{display:block;height:4px;border-radius:2px;background:var(--grad)}
+  .logo-mark span:nth-child(1){width:20px}
+  .logo-mark span:nth-child(2){width:14px;opacity:.75}
+  .logo-mark span:nth-child(3){width:8px;opacity:.5}
+  .nav-links{display:flex;gap:28px;font-size:14.5px;color:var(--muted)}
+  .nav-links a:hover{color:var(--chalk)}
+  .btn{
+    display:inline-block;padding:11px 22px;border-radius:999px;
+    font-weight:600;font-size:15px;letter-spacing:.01em;
+    background:var(--grad);color:#fff;
+    box-shadow:0 6px 24px rgba(31,191,107,.35);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);box-shadow:0 10px 30px rgba(31,191,107,.45)}
+  .btn.ghost{background:transparent;border:1px solid var(--line);box-shadow:none;color:var(--chalk)}
+  .btn.ghost:hover{border-color:var(--clay);color:var(--clay2)}
+  .btn.small{padding:9px 18px;font-size:14px}
+  @media(max-width:760px){.nav-links{display:none}}
+
+  /* ---------- HERO ---------- */
+  header{
+    position:relative;
+    padding:170px 0 90px;
+    background:
+      radial-gradient(900px 500px at 75% -10%, rgba(62,123,250,.18), transparent 60%),
+      radial-gradient(700px 400px at 10% 110%, rgba(31,191,107,.08), transparent 60%),
+      var(--bg);
+    overflow:hidden;
+  }
+  .courtlines{position:absolute;inset:0;pointer-events:none;opacity:.55}
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center;position:relative}
+  .kicker{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--clay2);margin-bottom:22px;
+  }
+  .kicker::before{content:"";width:26px;height:2px;background:var(--grad);border-radius:2px}
+  h1{
+    font-family:'Archivo Black',sans-serif;
+    font-size:clamp(44px,7vw,78px);
+    line-height:.98;letter-spacing:-.01em;text-transform:uppercase;
+    margin-bottom:24px;
+  }
+  h1 .accent{
+    background:var(--grad);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .lead{font-size:19px;color:var(--muted);max-width:480px;margin-bottom:36px}
+  .lead strong{color:var(--chalk);font-weight:600}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .hero-note{font-size:13.5px;color:var(--muted);margin-top:18px}
+
+  /* tier card */
+  .tiercard{
+    background:linear-gradient(180deg,var(--panel),#121B32);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:26px;
+    box-shadow:0 30px 80px rgba(0,0,0,.5);
+    transform:rotate(1.5deg);
+  }
+  .tiercard h3{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
+  .tiercard h3 .live{color:var(--clay2);display:inline-flex;align-items:center;gap:6px}
+  .live-dot{width:7px;height:7px;border-radius:50%;background:var(--clay2);animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+  .tier-row{
+    display:flex;align-items:center;gap:14px;
+    padding:12px 14px;border-radius:12px;margin-bottom:8px;
+    background:rgba(235,242,250,.03);
+    border:1px solid transparent;
+    transition:transform .2s ease,border-color .2s ease;
+  }
+  .tier-row:hover{transform:translateX(4px);border-color:rgba(168,233,46,.45)}
+  .tier-badge{
+    min-width:44px;height:44px;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Archivo Black',sans-serif;font-size:17px;
+  }
+  .t-s{background:var(--grad);color:#fff}
+  .t-a{background:rgba(62,123,250,.30);color:#9CC3FF}
+  .t-b{background:rgba(62,123,250,.16);color:#7FA3D9}
+  .t-c{background:rgba(235,242,250,.07);color:var(--muted)}
+  .tier-info{flex:1}
+  .tier-name{font-weight:600;font-size:15.5px}
+  .tier-sub{font-size:12.5px;color:var(--muted)}
+  .tier-delta{font-size:13px;font-weight:600}
+  .up{color:#7ED98B}.down{color:#E8756B}.same{color:var(--muted)}
+
+  /* ---------- MARQUEE ---------- */
+  .marquee{
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:16px 0;overflow:hidden;white-space:nowrap;
+    background:var(--bg2);
+  }
+  .marquee-track{display:inline-block;animation:scroll 28s linear infinite}
+  .marquee span{
+    font-family:'Archivo Black',sans-serif;font-size:15px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--muted);margin:0 28px;
+  }
+  .marquee span.dot{color:var(--clay)}
+  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:100px 0}
+  .sec-head{max-width:620px;margin-bottom:56px}
+  h2{
+    font-family:'Archivo Black',sans-serif;
+    font-size:clamp(30px,4.5vw,46px);
+    line-height:1.05;text-transform:uppercase;letter-spacing:-.005em;
+    margin:14px 0 18px;
+  }
+  .sec-head p{color:var(--muted);font-size:17.5px}
+
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .card{
+    background:var(--panel);border:1px solid var(--line);
+    border-radius:var(--radius);padding:30px 28px;
+    transition:transform .2s ease,border-color .2s ease;
+  }
+  .card:hover{transform:translateY(-4px);border-color:rgba(31,191,107,.45)}
+  .card .num{
+    font-family:'Archivo Black',sans-serif;font-size:15px;color:var(--clay2);
+    margin-bottom:16px;letter-spacing:.1em;
+  }
+  .card h3{font-size:19px;margin-bottom:10px;font-weight:600}
+  .card p{color:var(--muted);font-size:15.5px}
+
+  /* tiers explainer */
+  .tiers-flex{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+  .tierlist .tier-band{
+    display:flex;align-items:center;gap:18px;
+    padding:18px 22px;border-radius:14px;margin-bottom:10px;
+    border:1px solid var(--line);background:var(--panel);
+  }
+  .tier-band .tier-badge{min-width:52px;height:52px;font-size:20px}
+  .tier-band h4{font-size:17px;font-weight:600}
+  .tier-band p{font-size:14px;color:var(--muted)}
+  .tiers-copy p{color:var(--muted);margin-bottom:18px;font-size:16.5px}
+  .tiers-copy p strong{color:var(--chalk)}
+  .checks{list-style:none;margin-top:8px}
+  .checks li{
+    padding-left:30px;position:relative;margin-bottom:12px;
+    color:var(--chalk);font-size:16px;
+  }
+  .checks li::before{
+    content:"";position:absolute;left:0;top:7px;width:16px;height:9px;
+    border-left:2.5px solid var(--clay2);border-bottom:2.5px solid var(--clay2);
+    transform:rotate(-45deg);
+  }
+  .checks li span{color:var(--muted)}
+
+  /* split */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .split .card{padding:38px 34px}
+  .split h3{font-family:'Archivo Black',sans-serif;font-size:22px;text-transform:uppercase;margin-bottom:14px}
+  .split ul{list-style:none}
+  .split li{padding:9px 0;border-bottom:1px dashed var(--line);color:var(--muted);font-size:15.5px}
+  .split li:last-child{border-bottom:none}
+  .split li b{color:var(--chalk);font-weight:600}
+
+  /* ---------- CTA ---------- */
+  .cta{
+    background:
+      radial-gradient(700px 380px at 50% -20%, rgba(62,123,250,.20), transparent 65%),
+      var(--bg2);
+    border-top:1px solid var(--line);
+    text-align:center;
+  }
+  .cta .sec-head{margin:0 auto 40px;text-align:center}
+  .signup{
+    display:flex;gap:12px;max-width:520px;margin:0 auto;flex-wrap:wrap;justify-content:center;
+  }
+  .signup input{
+    flex:1;min-width:260px;
+    background:var(--panel);border:1px solid var(--line);border-radius:999px;
+    padding:14px 22px;color:var(--chalk);font-size:16px;font-family:inherit;
+    outline:none;transition:border-color .15s;
+  }
+  .signup input:focus{border-color:var(--clay)}
+  .signup input::placeholder{color:var(--muted)}
+  .cta-note{font-size:13.5px;color:var(--muted);margin-top:16px}
+  #signup-msg{margin-top:16px;font-size:15px;color:var(--clay2);min-height:22px;font-weight:600}
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--line);padding:36px 0;background:var(--bg)}
+  .foot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:14px}
+  .foot .logo{font-size:16px}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.visible{opacity:1;transform:none}
+
+  @media(max-width:900px){
+    .hero-grid,.tiers-flex,.split{grid-template-columns:1fr}
+    .cards{grid-template-columns:1fr}
+    header{padding:130px 0 70px}
+    .tiercard{transform:none}
+    section{padding:72px 0}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-inner">
+    <a class="logo" href="#top">
+      <svg class="logo-svg" viewBox="0 0 92 68" width="27" height="20" aria-hidden="true"><defs><linearGradient id="tpg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2E63E7"/><stop offset="100%" stop-color="#4E9BFA"/></linearGradient></defs><rect x="0" y="0" width="64" height="16" rx="8" fill="url(#tpg)"/><rect x="0" y="26" width="46" height="16" rx="8" fill="#3E7BFA" opacity="0.62"/><rect x="0" y="52" width="30" height="16" rx="8" fill="#3E7BFA" opacity="0.34"/><circle cx="78" cy="8" r="9" fill="#C6F532"/><path d="M 60 60 Q 78 44 78 22" stroke="#C6F532" stroke-opacity="0.55" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-dasharray="1 8"/></svg>
+      Tierplay
+    </a>
+    <div class="nav-links">
+      <a href="#koncept">Konceptet</a>
+      <a href="#hurdetfunkar">Så funkar det</a>
+      <a href="#tiers">Tiers</a>
+      <a href="#showcase">Båstadstegen</a>
+      <a href="#for-vem">För vem</a>
+    </div>
+    <a class="btn small" href="#anmal">Anmäl intresse</a>
+  </div>
+</nav>
+
+<header id="top">
+  <svg class="courtlines" viewBox="0 0 1400 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <g stroke="rgba(235,242,250,.09)" stroke-width="2" fill="none">
+      <path d="M-100 640 L1500 520"/>
+      <path d="M-100 760 L1500 610"/>
+      <path d="M180 800 L520 380"/>
+      <path d="M900 800 L1050 420"/>
+      <path d="M-100 700 L1500 565"/>
+    </g>
+    <g stroke="rgba(90,150,255,.4)" stroke-width="2.5" fill="none">
+      <path d="M-100 672 L1500 545"/>
+    </g>
+  </svg>
+  <div class="wrap hero-grid">
+    <div>
+      <span class="kicker">Racketsport &middot; Stege &middot; Community</span>
+      <h1>Starta er<br>egen <span class="accent">stege.</span></h1>
+      <p class="lead">Tierplay ger din klubb, hall eller ditt gäng ett eget stege-community — <strong>som <a href="https://bastadstegen.se" target="_blank" style="color:var(--chalk);text-decoration:underline;text-decoration-color:var(--clay2)">Båstadstegen</a>, fast ert.</strong> Jämna matcher, tydliga tiers och en klubbkänsla som lever hela säsongen.</p>
+      <div class="hero-cta">
+        <a class="btn" href="#anmal">Anmäl intresse</a>
+        <a class="btn ghost" href="#koncept">Läs mer</a>
+      </div>
+      <p class="hero-note">Tennis · Padel · Badminton · Squash · Pickleball</p>
+    </div>
+    <div class="tiercard reveal">
+      <h3>Stegen just nu <span class="live"><span class="live-dot"></span>Live</span></h3>
+      <div class="tier-row">
+        <div class="tier-badge t-s">S</div>
+        <div class="tier-info"><div class="tier-name">Toppskiktet</div><div class="tier-sub">8 spelare · 12 matcher denna vecka</div></div>
+        <div class="tier-delta up">▲ 2</div>
+      </div>
+      <div class="tier-row">
+        <div class="tier-badge t-a">A</div>
+        <div class="tier-info"><div class="tier-name">Utmanarna</div><div class="tier-sub">14 spelare · 19 matcher denna vecka</div></div>
+        <div class="tier-delta up">▲ 3</div>
+      </div>
+      <div class="tier-row">
+        <div class="tier-badge t-b">B</div>
+        <div class="tier-info"><div class="tier-name">Klättrarna</div><div class="tier-sub">17 spelare · 22 matcher denna vecka</div></div>
+        <div class="tier-delta down">▼ 1</div>
+      </div>
+      <div class="tier-row">
+        <div class="tier-badge t-c">C</div>
+        <div class="tier-info"><div class="tier-name">Nykomlingarna</div><div class="tier-sub">Öppen för alla · hoppa in när du vill</div></div>
+        <div class="tier-delta same">—</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Tennis</span><span class="dot">●</span><span>Padel</span><span class="dot">●</span><span>Badminton</span><span class="dot">●</span><span>Squash</span><span class="dot">●</span><span>Pickleball</span><span class="dot">●</span>
+    <span>Tennis</span><span class="dot">●</span><span>Padel</span><span class="dot">●</span><span>Badminton</span><span class="dot">●</span><span>Squash</span><span class="dot">●</span><span>Pickleball</span><span class="dot">●</span>
+  </div>
+</div>
+
+<section id="koncept">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">Konceptet</span>
+      <h2>Träning är bra.<br>Match är bättre.</h2>
+      <p>Den som spelar matcher mot jämna motståndare utvecklas snabbast. En egen stege gör det enkelt att hitta dem — vecka efter vecka, i ert eget community.</p>
+    </div>
+    <div class="cards">
+      <div class="card reveal">
+        <div class="num">01</div>
+        <h3>Jämna matcher</h3>
+        <p>Du möter spelare i din egen tier. Inga blowouts, inga bortkastade timmar — varje match är på riktigt och kan sluta åt båda håll.</p>
+      </div>
+      <div class="card reveal">
+        <div class="num">02</div>
+        <h3>Tydliga tiers</h3>
+        <p>Glöm krångliga poängsystem. Du ser exakt var du står, vem du kan utmana och vad som krävs för att ta nästa steg.</p>
+      </div>
+      <div class="card reveal">
+        <div class="num">03</div>
+        <h3>Riktig utveckling</h3>
+        <p>Stegen bygger matchtuffhet som syns i turneringsspel. Det är skillnaden mellan att träna bra och att vinna när det gäller.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="hurdetfunkar" style="background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">Så funkar det</span>
+      <h2>Tre steg. Sen är det bara att spela.</h2>
+    </div>
+    <div class="cards">
+      <div class="card reveal">
+        <div class="num">Steg 1</div>
+        <h3>Starta ert community</h3>
+        <p>Sätt upp en stege för din klubb, hall eller ditt gäng — med eget namn och egen känsla, precis som Båstadstegen. Spelarna placeras i tiers efter nivå.</p>
+      </div>
+      <div class="card reveal">
+        <div class="num">Steg 2</div>
+        <h3>Utmana & spela</h3>
+        <p>Utmana spelare i din tier — eller tiern ovanför när du är redo. Ni bokar tid som passar er, Tierplay håller koll på resten.</p>
+      </div>
+      <div class="card reveal">
+        <div class="num">Steg 3</div>
+        <h3>Rapportera & klättra</h3>
+        <p>Resultatet rapporteras på sekunder. Vinster tar dig uppåt, stegen uppdateras live och nästa utmaning väntar redan.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tiers">
+  <div class="wrap tiers-flex">
+    <div class="tierlist reveal">
+      <div class="tier-band">
+        <div class="tier-badge t-s">S</div>
+        <div><h4>Tier S — Toppskiktet</h4><p>Bäst just nu. Alla vill ha din plats.</p></div>
+      </div>
+      <div class="tier-band">
+        <div class="tier-badge t-a">A</div>
+        <div><h4>Tier A — Utmanarna</h4><p>En bra vecka ifrån toppen.</p></div>
+      </div>
+      <div class="tier-band">
+        <div class="tier-badge t-b">B</div>
+        <div><h4>Tier B — Klättrarna</h4><p>Formen pekar uppåt. Momentum räknas.</p></div>
+      </div>
+      <div class="tier-band">
+        <div class="tier-badge t-c">C</div>
+        <div><h4>Tier C — Nykomlingarna</h4><p>Alla börjar någonstans. Ingen stannar länge.</p></div>
+      </div>
+    </div>
+    <div class="tiers-copy reveal">
+      <span class="kicker">Tiers</span>
+      <h2>Din plats.<br>Försvara den —<br>eller ta en ny.</h2>
+      <p>Varje stege delas in i tiers. <strong>Vinner du klättrar du, förlorar du får du revansch.</strong> Enkelt att förstå, omöjligt att släppa.</p>
+      <ul class="checks">
+        <li>Säsonger med upp- och nedflyttning <span>— som en riktig serie</span></li>
+        <li>Utmana uppåt när du är i form <span>— ta en plats i tiern ovanför</span></li>
+        <li>Historik och statistik <span>— se din utveckling över tid</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="showcase">
+  <div class="wrap tiers-flex">
+    <div class="tiers-copy reveal">
+      <span class="kicker">Bevisat på banan</span>
+      <h2>Båstadstegen<br>gick före.</h2>
+      <p><strong>Båstadstegen är originalet</strong> — ett levande stege-community i Båstad där spelare möts vecka efter vecka, klättrar mellan tiers och tar med sig matchtuffheten in i turneringsspel.</p>
+      <p>Tierplay är sättet att få samma sak där du spelar. Eget namn, egna spelare, egen kultur — stegen som motor.</p>
+      <a class="btn ghost" href="https://bastadstegen.se" target="_blank" rel="noopener">Se bastadstegen.se →</a>
+    </div>
+    <div class="tierlist reveal">
+      <div class="tier-band">
+        <div class="tier-badge t-s">🎾</div>
+        <div><h4>Levande community</h4><p>Matcher varje vecka, säsong efter säsong.</p></div>
+      </div>
+      <div class="tier-band">
+        <div class="tier-badge t-a">📈</div>
+        <div><h4>Resultat som syns</h4><p>Stegspelare som går djupt i turneringar.</p></div>
+      </div>
+      <div class="tier-band">
+        <div class="tier-badge t-b">🏷️</div>
+        <div><h4>Egen identitet</h4><p>Eget namn, egen look — till och med egen merch.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="for-vem" style="background:var(--bg2);border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">För vem</span>
+      <h2>Spelare älskar det.<br>Klubbar behöver det.</h2>
+    </div>
+    <div class="split">
+      <div class="card reveal">
+        <h3>För spelare</h3>
+        <ul>
+          <li><b>Fler matcher</b> — mot rätt motstånd, när det passar dig</li>
+          <li><b>Något att spela för</b> — varje match påverkar din plats</li>
+          <li><b>Se din utveckling</b> — resultat, form och klättring över tid</li>
+          <li><b>Hitta nya spelpartners</b> — på precis din nivå</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <h3>För klubbar & anläggningar</h3>
+        <ul>
+          <li><b>Aktivare medlemmar</b> — en stege ger anledning att boka bana</li>
+          <li><b>Noll administration</b> — stegen sköter sig själv</li>
+          <li><b>Gemenskap</b> — medlemmar som möts, spelar och stannar kvar</li>
+          <li><b>Fungerar för alla racketsporter</b> — en plattform, hela hallen</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta" id="anmal">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker" style="justify-content:center">Var med från start</span>
+      <h2>Redo att starta er stege?</h2>
+      <p>Tierplay är under uppbyggnad. Anmäl ditt intresse — som spelare eller klubb — så hör vi av oss när det är dags för första serven.</p>
+    </div>
+    <form class="signup reveal" id="signup-form">
+      <input type="email" id="signup-email" placeholder="din@mejladress.se" required>
+      <button class="btn" type="submit">Håll mig uppdaterad</button>
+    </form>
+    <div id="signup-msg"></div>
+    <p class="cta-note">Spelare, klubb eller bara nyfiken — alla är välkomna. Inga utskick förrän det finns något att berätta.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a class="logo" href="#top">
+      <svg class="logo-svg" viewBox="0 0 92 68" width="27" height="20" aria-hidden="true"><defs><linearGradient id="tpg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2E63E7"/><stop offset="100%" stop-color="#4E9BFA"/></linearGradient></defs><rect x="0" y="0" width="64" height="16" rx="8" fill="url(#tpg)"/><rect x="0" y="26" width="46" height="16" rx="8" fill="#3E7BFA" opacity="0.62"/><rect x="0" y="52" width="30" height="16" rx="8" fill="#3E7BFA" opacity="0.34"/><circle cx="78" cy="8" r="9" fill="#C6F532"/><path d="M 60 60 Q 78 44 78 22" stroke="#C6F532" stroke-opacity="0.55" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-dasharray="1 8"/></svg>
+      Tierplay
+    </a>
+    <div>tierplay.se · © 2026 Tierplay</div>
+    <div><a href="mailto:hej@tierplay.se" style="color:var(--clay2)">hej@tierplay.se</a></div>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target);} });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  // Intresseanmälan: öppnar ett förifyllt mejl (funkar utan backend på statiskt webbhotell).
+  // Byt gärna till t.ex. Formspree/Mailchimp senare för att samla adresser automatiskt.
+  document.getElementById('signup-form').addEventListener('submit', function(ev){
+    ev.preventDefault();
+    const email = document.getElementById('signup-email').value.trim();
+    if(!email) return;
+    const subject = encodeURIComponent('Intresseanmälan Tierplay');
+    const body = encodeURIComponent('Hej!\n\nJag vill gärna veta när Tierplay drar igång.\n\nMin mejladress: ' + email + '\n\n/Skickat från tierplay.se');
+    window.location.href = 'mailto:hej@tierplay.se?subject=' + subject + '&body=' + body;
+    document.getElementById('signup-msg').textContent = 'Tack! Ett mejl öppnas — skicka iväg det så är du med på listan. 🎾';
+  });
+</script>
+
+</body>
+</html>
