@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registrera din stege — Tierplay</title>
+<meta name="description" content="Starta ett eget stege-community för din klubb eller förening. Välj speltyp — vanlig stege, sommarstege eller poolspel — och kom igång med Tierplay.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;1,400&family=Archivo+Black&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B1120; --bg2:#0F1730; --panel:#16203A;
+    --line:rgba(235,242,250,.12);
+    --chalk:#F0F5FA; --muted:#9AA8BC;
+    --clay:#1FBF6B; --clay2:#A8E92E; --blue:#3E7BFA;
+    --grad:linear-gradient(100deg,#1FBF6B,#A8E92E);
+    --radius:18px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--chalk);font-family:'Archivo',system-ui,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  ::selection{background:var(--clay);color:#fff}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:rgba(11,17,32,.72);border-bottom:1px solid var(--line)}
+  .nav-inner{max-width:1140px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{display:flex;align-items:center;gap:10px;font-family:'Archivo Black',sans-serif;font-size:20px;letter-spacing:.04em;text-transform:uppercase}
+  .nav-back{font-size:14.5px;color:var(--muted)}
+  .nav-back:hover{color:var(--chalk)}
+
+  header{padding:150px 0 30px;text-align:center;background:radial-gradient(700px 400px at 50% -20%, rgba(62,123,250,.16), transparent 60%),var(--bg)}
+  .kicker{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--clay2);margin-bottom:16px}
+  h1{font-family:'Archivo Black',sans-serif;font-size:clamp(32px,6vw,52px);line-height:1.02;text-transform:uppercase;margin-bottom:14px}
+  h1 .accent{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead{color:var(--muted);max-width:520px;margin:0 auto}
+
+  /* progress */
+  .progress{display:flex;justify-content:center;gap:10px;margin:36px 0 8px}
+  .pstep{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);font-weight:600}
+  .pdot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Archivo Black',sans-serif;font-size:13px;background:var(--panel);border:1px solid var(--line);color:var(--muted)}
+  .pstep.active .pdot{background:var(--grad);color:#08260f;border:none}
+  .pstep.active{color:var(--chalk)}
+  .pstep.done .pdot{background:rgba(31,191,107,.25);color:var(--clay2);border:none}
+  .pline{width:34px;height:1.5px;background:var(--line);align-self:center}
+
+  section{padding:28px 0 90px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:34px}
+  .step{display:none}
+  .step.active{display:block;animation:fade .35s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .step h2{font-family:'Archivo Black',sans-serif;font-size:22px;text-transform:uppercase;margin-bottom:6px}
+  .step .sub{color:var(--muted);font-size:15.5px;margin-bottom:24px}
+
+  /* speltyp cards */
+  .types{display:grid;gap:14px}
+  .type{position:relative;display:flex;gap:16px;align-items:flex-start;padding:20px;border:1.5px solid var(--line);border-radius:14px;cursor:pointer;transition:border-color .15s,background .15s;background:rgba(235,242,250,.02)}
+  .type:hover{border-color:rgba(31,191,107,.5)}
+  .type.selected{border-color:var(--clay);background:rgba(31,191,107,.08)}
+  .type .ticon{min-width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;background:rgba(62,123,250,.18)}
+  .type h3{font-size:17px;font-weight:600;margin-bottom:3px}
+  .type p{font-size:14px;color:var(--muted)}
+  .type .check{position:absolute;top:16px;right:16px;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line)}
+  .type.selected .check{background:var(--grad);border:none}
+  .type.selected .check::after{content:"";position:absolute;top:6px;right:8px;width:7px;height:4px;border-left:2px solid #08260f;border-bottom:2px solid #08260f;transform:rotate(-45deg)}
+
+  /* form */
+  label{display:block;font-size:13.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin:18px 0 7px}
+  label .opt{font-weight:400;text-transform:none;letter-spacing:0}
+  input[type=text],input[type=email],input[type=tel],textarea{
+    width:100%;background:rgba(235,242,250,.04);border:1.5px solid var(--line);border-radius:12px;
+    padding:13px 16px;color:var(--chalk);font-size:16px;font-family:inherit;outline:none;transition:border-color .15s;
+  }
+  input:focus,textarea:focus{border-color:var(--clay)}
+  input::placeholder,textarea::placeholder{color:rgba(154,168,188,.55)}
+  textarea{min-height:90px;resize:vertical}
+  .chips{display:flex;flex-wrap:wrap;gap:9px}
+  .chip{padding:9px 17px;border-radius:999px;border:1.5px solid var(--line);font-size:14.5px;cursor:pointer;color:var(--muted);transition:all .15s;user-select:none}
+  .chip:hover{border-color:rgba(31,191,107,.5)}
+  .chip.on{background:var(--grad);color:#08260f;font-weight:600;border-color:transparent}
+
+  .nav-btns{display:flex;justify-content:space-between;gap:12px;margin-top:30px}
+  .btn{display:inline-block;padding:13px 26px;border-radius:999px;font-weight:600;font-size:15.5px;background:var(--grad);color:#08260f;border:none;cursor:pointer;font-family:inherit;box-shadow:0 6px 24px rgba(31,191,107,.3);transition:transform .15s}
+  .btn:hover{transform:translateY(-1px)}
+  .btn:disabled{opacity:.55;cursor:default;transform:none}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--chalk);box-shadow:none}
+  .btn.ghost:hover{border-color:var(--clay)}
+  .err{color:#FF8B7E;font-size:14px;margin-top:14px;min-height:20px}
+
+  /* success */
+  .success{text-align:center;padding:20px 0}
+  .success .ball{font-size:52px;margin-bottom:14px}
+  .success h2{font-family:'Archivo Black',sans-serif;font-size:28px;text-transform:uppercase;margin-bottom:10px}
+  .success p{color:var(--muted);max-width:440px;margin:0 auto 8px}
+  .summary{margin:26px auto 0;max-width:420px;text-align:left;border:1px solid var(--line);border-radius:14px;padding:20px 24px}
+  .summary div{display:flex;justify-content:space-between;gap:14px;padding:7px 0;border-bottom:1px dashed var(--line);font-size:14.5px}
+  .summary div:last-child{border:none}
+  .summary span{color:var(--muted)}
+  .summary b{text-align:right}
+
+  footer{border-top:1px solid var(--line);padding:32px 0;text-align:center;color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="index.html">
+      <svg viewBox="0 0 92 68" width="27" height="20" aria-hidden="true"><defs><linearGradient id="tpg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2E63E7"/><stop offset="100%" stop-color="#4E9BFA"/></linearGradient></defs><rect x="0" y="0" width="64" height="16" rx="8" fill="url(#tpg)"/><rect x="0" y="26" width="46" height="16" rx="8" fill="#3E7BFA" opacity="0.62"/><rect x="0" y="52" width="30" height="16" rx="8" fill="#3E7BFA" opacity="0.34"/><circle cx="78" cy="8" r="9" fill="#C6F532"/><path d="M 60 60 Q 78 44 78 22" stroke="#C6F532" stroke-opacity="0.55" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-dasharray="1 8"/></svg>
+      Tierplay
+    </a>
+    <a class="nav-back" href="index.html">← Tillbaka till startsidan</a>
+  </div>
+</nav>
+
+<header>
+  <span class="kicker">Kom igång</span>
+  <h1>Registrera <span class="accent">din stege.</span></h1>
+  <p class="lead">Tre snabba steg så sätter vi upp ett eget stege-community för din klubb, hall eller ditt gäng.</p>
+  <div class="progress">
+    <div class="pstep active" id="p1"><span class="pdot">1</span> Speltyp</div>
+    <div class="pline"></div>
+    <div class="pstep" id="p2"><span class="pdot">2</span> Din stege</div>
+    <div class="pline"></div>
+    <div class="pstep" id="p3"><span class="pdot">3</span> Kontakt</div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="card" id="wizard">
+
+      <!-- STEG 1: SPELTYP -->
+      <div class="step active" id="step1">
+        <h2>Välj speltyp</h2>
+        <p class="sub">Hur vill ni spela? Det går att ändra senare — och en klubb kan ha flera stegar.</p>
+        <div class="types">
+          <div class="type" data-type="vanlig">
+            <div class="ticon">🪜</div>
+            <div>
+              <h3>Vanlig stege</h3>
+              <p>Klassisk utmanarstege som rullar hela säsongen. Utmana spelare ovanför dig — vinn och ta deras plats. Precis som Båstadstegen.</p>
+            </div>
+            <span class="check"></span>
+          </div>
+          <div class="type" data-type="sommar">
+            <div class="ticon">☀️</div>
+            <div>
+              <h3>Sommarstege</h3>
+              <p>Tidsbegränsad stege över t.ex. juni–augusti. Intensiv, social och perfekt för säsongsklubbar och sommarorter. Avslutas med slutställning.</p>
+            </div>
+            <span class="check"></span>
+          </div>
+          <div class="type" data-type="pool">
+            <div class="ticon">🏆</div>
+            <div>
+              <h3>Poolspel</h3>
+              <p>Spelarna delas in i pooler efter nivå. Alla möter alla inom poolen, sedan upp- och nedflyttning mellan omgångarna. Jämna matcher varje gång.</p>
+            </div>
+            <span class="check"></span>
+          </div>
+        </div>
+        <div class="err" id="err1"></div>
+        <div class="nav-btns">
+          <span></span>
+          <button class="btn" onclick="goto(2)">Nästa →</button>
+        </div>
+      </div>
+
+      <!-- STEG 2: OM STEGEN -->
+      <div class="step" id="step2">
+        <h2>Om er stege</h2>
+        <p class="sub">Berätta vad stegen ska heta och var den hör hemma.</p>
+
+        <label for="ladderName">Stegens namn</label>
+        <input type="text" id="ladderName" placeholder="t.ex. Torekovsstegen" maxlength="80">
+
+        <label for="clubName">Klubb / förening / gäng</label>
+        <input type="text" id="clubName" placeholder="t.ex. Torekov Tennisklubb" maxlength="120">
+
+        <label for="location">Ort <span class="opt">(valfritt)</span></label>
+        <input type="text" id="location" placeholder="t.ex. Torekov" maxlength="80">
+
+        <label>Sporter</label>
+        <div class="chips" id="sports">
+          <span class="chip" data-s="Tennis">Tennis</span>
+          <span class="chip" data-s="Padel">Padel</span>
+          <span class="chip" data-s="Badminton">Badminton</span>
+          <span class="chip" data-s="Squash">Squash</span>
+          <span class="chip" data-s="Pickleball">Pickleball</span>
+        </div>
+
+        <div class="err" id="err2"></div>
+        <div class="nav-btns">
+          <button class="btn ghost" onclick="goto(1)">← Tillbaka</button>
+          <button class="btn" onclick="goto(3)">Nästa →</button>
+        </div>
+      </div>
+
+      <!-- STEG 3: KONTAKT -->
+      <div class="step" id="step3">
+        <h2>Kontaktuppgifter</h2>
+        <p class="sub">Så vi kan höra av oss när stegen är uppsatt och redo.</p>
+
+        <label for="contactName">Ditt namn</label>
+        <input type="text" id="contactName" placeholder="För- och efternamn" maxlength="80">
+
+        <label for="contactEmail">E-post</label>
+        <input type="email" id="contactEmail" placeholder="din@mejladress.se" maxlength="120">
+
+        <label for="contactPhone">Telefon <span class="opt">(valfritt)</span></label>
+        <input type="tel" id="contactPhone" placeholder="07X-XXX XX XX" maxlength="30">
+
+        <label for="notes">Något mer vi bör veta? <span class="opt">(valfritt)</span></label>
+        <textarea id="notes" placeholder="Antal spelare, önskad start, särskilda önskemål…" maxlength="1000"></textarea>
+
+        <div class="err" id="err3"></div>
+        <div class="nav-btns">
+          <button class="btn ghost" onclick="goto(2)">← Tillbaka</button>
+          <button class="btn" id="submitBtn" onclick="submitLadder()">Registrera stegen 🎾</button>
+        </div>
+      </div>
+
+      <!-- SUCCESS -->
+      <div class="step" id="stepDone">
+        <div class="success">
+          <div class="ball">🎾</div>
+          <h2>Stegen är registrerad!</h2>
+          <p>Grymt! Vi sätter upp <b id="sumNameInline" style="color:var(--chalk)"></b> och hör av oss till dig så fort den är redo för första serven.</p>
+          <div class="summary" id="summary"></div>
+          <div class="nav-btns" style="justify-content:center">
+            <a class="btn ghost" href="index.html">Till startsidan</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>tierplay.se · © 2026 Tierplay · <a href="mailto:hej@tierplay.se" style="color:var(--clay2)">hej@tierplay.se</a></footer>
+
+<script>
+  const SB_URL = "https://xfzgkjapfauqdzvussbz.supabase.co";
+  const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhmemdramFwZmF1cWR6dnVzc2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwOTEzNTAsImV4cCI6MjEwMDY2NzM1MH0.vxwgXzksOa_EXPL4QIWwufVezAFbGcyzPqeFubRdVkQ";
+
+  const TYPE_LABELS = { vanlig: "Vanlig stege", sommar: "Sommarstege", pool: "Poolspel" };
+  let state = { play_type: null, sports: [] };
+
+  // Speltyp-val
+  document.querySelectorAll('.type').forEach(t => t.addEventListener('click', () => {
+    document.querySelectorAll('.type').forEach(x => x.classList.remove('selected'));
+    t.classList.add('selected');
+    state.play_type = t.dataset.type;
+    document.getElementById('err1').textContent = '';
+  }));
+
+  // Sport-chips
+  document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
+    c.classList.toggle('on');
+    state.sports = [...document.querySelectorAll('.chip.on')].map(x => x.dataset.s);
+  }));
+
+  function show(n){
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.getElementById(n === 'done' ? 'stepDone' : 'step' + n).classList.add('active');
+    for (let i = 1; i <= 3; i++) {
+      const p = document.getElementById('p' + i);
+      p.classList.remove('active','done');
+      if (n === 'done' || i < n) p.classList.add('done');
+      else if (i === n) p.classList.add('active');
+    }
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  function goto(n){
+    if (n === 2 && !state.play_type) { document.getElementById('err1').textContent = 'Välj en speltyp för att gå vidare.'; return; }
+    if (n === 3) {
+      const name = val('ladderName'), club = val('clubName');
+      if (!name || !club) { document.getElementById('err2').textContent = 'Fyll i stegens namn och klubb/förening.'; return; }
+      document.getElementById('err2').textContent = '';
+    }
+    show(n);
+  }
+
+  function val(id){ return document.getElementById(id).value.trim(); }
+
+  async function submitLadder(){
+    const err = document.getElementById('err3');
+    const name = val('contactName'), email = val('contactEmail');
+    if (!name || !email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      err.textContent = 'Fyll i namn och en giltig e-postadress.'; return;
+    }
+    err.textContent = '';
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true; btn.textContent = 'Registrerar…';
+
+    const payload = {
+      ladder_name: val('ladderName'),
+      club_name: val('clubName'),
+      location: val('location') || null,
+      sports: state.sports,
+      play_type: state.play_type,
+      contact_name: name,
+      contact_email: email,
+      contact_phone: val('contactPhone') || null,
+      notes: val('notes') || null
+    };
+
+    try {
+      const res = await fetch(SB_URL + '/rest/v1/tierplay_ladders', {
+        method: 'POST',
+        headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+
+      document.getElementById('sumNameInline').textContent = payload.ladder_name;
+      document.getElementById('summary').innerHTML = `
+        <div><span>Stege</span><b>${esc(payload.ladder_name)}</b></div>
+        <div><span>Klubb</span><b>${esc(payload.club_name)}</b></div>
+        ${payload.location ? `<div><span>Ort</span><b>${esc(payload.location)}</b></div>` : ''}
+        <div><span>Speltyp</span><b>${TYPE_LABELS[payload.play_type]}</b></div>
+        ${payload.sports.length ? `<div><span>Sporter</span><b>${payload.sports.map(esc).join(', ')}</b></div>` : ''}
+        <div><span>Kontakt</span><b>${esc(payload.contact_email)}</b></div>`;
+      show('done');
+    } catch(e) {
+      err.textContent = 'Något gick fel — försök igen, eller mejla oss på hej@tierplay.se.';
+      btn.disabled = false; btn.textContent = 'Registrera stegen 🎾';
+    }
+  }
+
+  function esc(s){ const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+</script>
+
+</body>
+</html>

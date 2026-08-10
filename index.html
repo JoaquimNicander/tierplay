@@ -262,7 +262,7 @@
       <a href="#showcase">Båstadstegen</a>
       <a href="#for-vem">För vem</a>
     </div>
-    <a class="btn small" href="#anmal">Anmäl intresse</a>
+    <a class="btn small" href="registrera.html">Registrera din stege</a>
   </div>
 </nav>
 
@@ -285,7 +285,7 @@
       <h1>Starta er<br>egen <span class="accent">stege.</span></h1>
       <p class="lead">Tierplay ger din klubb, hall eller ditt gäng ett eget stege-community — <strong>som <a href="https://bastadstegen.se" target="_blank" style="color:var(--chalk);text-decoration:underline;text-decoration-color:var(--clay2)">Båstadstegen</a>, fast ert.</strong> Jämna matcher, tydliga tiers och en klubbkänsla som lever hela säsongen.</p>
       <div class="hero-cta">
-        <a class="btn" href="#anmal">Anmäl intresse</a>
+        <a class="btn" href="registrera.html">Registrera din stege</a>
         <a class="btn ghost" href="#koncept">Läs mer</a>
       </div>
       <p class="hero-note">Tennis · Padel · Badminton · Squash · Pickleball</p>
@@ -469,11 +469,14 @@
     <div class="sec-head reveal">
       <span class="kicker" style="justify-content:center">Var med från start</span>
       <h2>Redo att starta er stege?</h2>
-      <p>Tierplay är under uppbyggnad. Anmäl ditt intresse — som spelare eller klubb — så hör vi av oss när det är dags för första serven.</p>
+      <p>Registrera er stege på tre minuter — välj speltyp, döp den och kör. Eller lämna din mejl så hör vi av oss.</p>
+    </div>
+    <div class="reveal" style="margin-bottom:28px">
+      <a class="btn" href="registrera.html" style="font-size:17px;padding:15px 34px">Registrera din stege →</a>
     </div>
     <form class="signup reveal" id="signup-form">
       <input type="email" id="signup-email" placeholder="din@mejladress.se" required>
-      <button class="btn" type="submit">Håll mig uppdaterad</button>
+      <button class="btn ghost" type="submit" style="border-radius:999px">Håll mig uppdaterad</button>
     </form>
     <div id="signup-msg"></div>
     <p class="cta-note">Spelare, klubb eller bara nyfiken — alla är välkomna. Inga utskick förrän det finns något att berätta.</p>
@@ -498,16 +501,28 @@
   },{threshold:.12});
   document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-  // Intresseanmälan: öppnar ett förifyllt mejl (funkar utan backend på statiskt webbhotell).
-  // Byt gärna till t.ex. Formspree/Mailchimp senare för att samla adresser automatiskt.
-  document.getElementById('signup-form').addEventListener('submit', function(ev){
+  // Intresseanmälan: sparas direkt i Tierplays databas (Supabase).
+  const SB_URL = "https://xfzgkjapfauqdzvussbz.supabase.co";
+  const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhmemdramFwZmF1cWR6dnVzc2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwOTEzNTAsImV4cCI6MjEwMDY2NzM1MH0.vxwgXzksOa_EXPL4QIWwufVezAFbGcyzPqeFubRdVkQ";
+  document.getElementById('signup-form').addEventListener('submit', async function(ev){
     ev.preventDefault();
     const email = document.getElementById('signup-email').value.trim();
+    const msg = document.getElementById('signup-msg');
     if(!email) return;
-    const subject = encodeURIComponent('Intresseanmälan Tierplay');
-    const body = encodeURIComponent('Hej!\n\nJag vill gärna veta när Tierplay drar igång.\n\nMin mejladress: ' + email + '\n\n/Skickat från tierplay.se');
-    window.location.href = 'mailto:hej@tierplay.se?subject=' + subject + '&body=' + body;
-    document.getElementById('signup-msg').textContent = 'Tack! Ett mejl öppnas — skicka iväg det så är du med på listan. 🎾';
+    msg.textContent = 'Sparar…';
+    try {
+      const res = await fetch(SB_URL + '/rest/v1/tierplay_interest', {
+        method: 'POST',
+        headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+        body: JSON.stringify({ email: email, source: 'landing' })
+      });
+      if (res.status === 409) { msg.textContent = 'Du är redan med på listan — vi hörs! 🎾'; return; }
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      msg.textContent = 'Tack! Du är med på listan. 🎾';
+      document.getElementById('signup-email').value = '';
+    } catch(e) {
+      msg.textContent = 'Kunde inte spara just nu — mejla oss på hej@tierplay.se istället.';
+    }
   });
 </script>
 
