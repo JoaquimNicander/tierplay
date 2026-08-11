@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logga in — Tierplay</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;1,400&family=Archivo+Black&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B1120; --bg2:#0F1730; --panel:#16203A;
+    --line:rgba(235,242,250,.12);
+    --chalk:#F0F5FA; --muted:#9AA8BC;
+    --clay:#1FBF6B; --clay2:#A8E92E; --blue:#3E7BFA;
+    --grad:linear-gradient(100deg,#1FBF6B,#A8E92E);
+    --radius:18px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--chalk);font-family:'Archivo',system-ui,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--clay);color:#fff}
+  .wrap{max-width:640px;margin:0 auto;padding:0 24px}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:rgba(11,17,32,.72);border-bottom:1px solid var(--line)}
+  .nav-inner{max-width:1140px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{display:flex;align-items:center;gap:10px;font-family:'Archivo Black',sans-serif;font-size:20px;letter-spacing:.04em;text-transform:uppercase}
+  .nav-back{font-size:14.5px;color:var(--muted)}
+  .nav-back:hover{color:var(--chalk)}
+
+  header{padding:140px 0 26px;text-align:center;background:radial-gradient(700px 400px at 50% -20%, rgba(62,123,250,.16), transparent 60%),var(--bg)}
+  .kicker{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--clay2);margin-bottom:14px}
+  h1{font-family:'Archivo Black',sans-serif;font-size:clamp(30px,5.5vw,46px);line-height:1.03;text-transform:uppercase;margin-bottom:12px}
+  h1 .accent{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead{color:var(--muted);max-width:440px;margin:0 auto}
+
+  section{padding:20px 0 90px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:32px}
+  .view{display:none}.view.active{display:block;animation:fade .3s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  label{display:block;font-size:13.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin:0 0 7px}
+  input[type=email]{width:100%;background:rgba(235,242,250,.04);border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;color:var(--chalk);font-size:16px;font-family:inherit;outline:none;transition:border-color .15s}
+  input[type=email]:focus{border-color:var(--clay)}
+  input::placeholder{color:rgba(154,168,188,.55)}
+  .btn{display:inline-block;width:100%;text-align:center;padding:14px 26px;border-radius:999px;font-weight:600;font-size:16px;background:var(--grad);color:#08260f;border:none;cursor:pointer;font-family:inherit;box-shadow:0 6px 24px rgba(31,191,107,.3);transition:transform .15s;margin-top:20px}
+  .btn:hover{transform:translateY(-1px)}
+  .btn:disabled{opacity:.55;cursor:default;transform:none}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--chalk);box-shadow:none;width:auto;padding:11px 22px;font-size:14.5px;margin:0}
+  .btn.ghost:hover{border-color:var(--clay)}
+  .msg{font-size:14.5px;margin-top:16px;min-height:22px}
+  .msg.err{color:#FF8B7E}.msg.ok{color:var(--clay2)}
+  .hint{font-size:13.5px;color:var(--muted);margin-top:18px;text-align:center}
+
+  /* sent state */
+  .sent{text-align:center}
+  .sent .icon{font-size:46px;margin-bottom:12px}
+  .sent h2{font-family:'Archivo Black',sans-serif;font-size:23px;text-transform:uppercase;margin-bottom:10px}
+  .sent p{color:var(--muted);font-size:15.5px}
+  .sent b{color:var(--chalk)}
+
+  /* dashboard */
+  .dash-head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:22px}
+  .dash-head h2{font-family:'Archivo Black',sans-serif;font-size:22px;text-transform:uppercase}
+  .whoami{font-size:13.5px;color:var(--muted)}
+  .ladder{border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:12px;background:rgba(235,242,250,.02)}
+  .ladder-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
+  .ladder h3{font-size:18px;font-weight:600}
+  .ladder .club{font-size:14px;color:var(--muted)}
+  .badge{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:5px 11px;border-radius:999px;white-space:nowrap}
+  .b-pending{background:rgba(62,123,250,.18);color:#9CC3FF}
+  .b-active{background:rgba(31,191,107,.2);color:var(--clay2)}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .tag{font-size:12.5px;padding:5px 11px;border-radius:999px;background:rgba(235,242,250,.06);color:var(--muted)}
+  .empty{text-align:center;color:var(--muted);padding:26px 0}
+  .empty a{color:var(--clay2)}
+  .next{margin-top:22px;padding:18px 20px;border-radius:14px;background:rgba(62,123,250,.09);border:1px solid rgba(62,123,250,.25);font-size:14.5px;color:var(--muted)}
+  .next b{color:var(--chalk)}
+
+  footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="index.html">
+      <svg viewBox="0 0 92 68" width="27" height="20" aria-hidden="true"><defs><linearGradient id="tpg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2E63E7"/><stop offset="100%" stop-color="#4E9BFA"/></linearGradient></defs><rect x="0" y="0" width="64" height="16" rx="8" fill="url(#tpg)"/><rect x="0" y="26" width="46" height="16" rx="8" fill="#3E7BFA" opacity="0.62"/><rect x="0" y="52" width="30" height="16" rx="8" fill="#3E7BFA" opacity="0.34"/><circle cx="78" cy="8" r="9" fill="#C6F532"/><path d="M 60 60 Q 78 44 78 22" stroke="#C6F532" stroke-opacity="0.55" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-dasharray="1 8"/></svg>
+      Tierplay
+    </a>
+    <a class="nav-back" href="index.html">← Till startsidan</a>
+  </div>
+</nav>
+
+<header>
+  <span class="kicker" id="hdrKicker">Min stege</span>
+  <h1 id="hdrTitle">Logga <span class="accent">in.</span></h1>
+  <p class="lead" id="hdrLead">Vi mejlar en inloggningslänk — inget lösenord att komma ihåg.</p>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="card">
+
+      <!-- LOGIN FORM -->
+      <div class="view active" id="viewLogin">
+        <label for="email">Din e-post</label>
+        <input type="email" id="email" placeholder="din@mejladress.se" autocomplete="email">
+        <button class="btn" id="sendBtn">Skicka inloggningslänk</button>
+        <div class="msg" id="msg"></div>
+        <p class="hint">Använd samma adress som du registrerade stegen med.<br>
+          Har du ingen stege än? <a href="registrera.html" style="color:var(--clay2)">Registrera en här →</a></p>
+      </div>
+
+      <!-- LINK SENT -->
+      <div class="view" id="viewSent">
+        <div class="sent">
+          <div class="icon">📬</div>
+          <h2>Kolla din mejl</h2>
+          <p>Vi skickade en inloggningslänk till <b id="sentTo"></b>. Öppna mejlet och klicka på länken — då är du inne.</p>
+          <p style="margin-top:14px;font-size:14px">Hittar du inget? Kolla skräpposten, eller <a href="#" id="retry" style="color:var(--clay2)">försök igen</a>.</p>
+        </div>
+      </div>
+
+      <!-- LOADING -->
+      <div class="view" id="viewLoading">
+        <div class="sent"><div class="icon">🎾</div><p>Loggar in…</p></div>
+      </div>
+
+      <!-- DASHBOARD -->
+      <div class="view" id="viewDash">
+        <div class="dash-head">
+          <div>
+            <h2>Mina stegar</h2>
+            <div class="whoami" id="whoami"></div>
+          </div>
+          <button class="btn ghost" id="logoutBtn">Logga ut</button>
+        </div>
+        <div id="ladders"></div>
+        <div class="next">
+          <b>På väg:</b> härifrån kommer du snart kunna bjuda in spelare, skicka meddelanden via mejl och SMS, rapportera resultat och publicera ställningen.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>tierplay.se · © 2026 Tierplay · <a href="mailto:hej@tierplay.se" style="color:var(--clay2)">hej@tierplay.se</a></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SB_URL = "https://xfzgkjapfauqdzvussbz.supabase.co";
+  const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhmemdramFwZmF1cWR6dnVzc2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwOTEzNTAsImV4cCI6MjEwMDY2NzM1MH0.vxwgXzksOa_EXPL4QIWwufVezAFbGcyzPqeFubRdVkQ";
+  const sb = supabase.createClient(SB_URL, SB_KEY);
+
+  const TYPE_LABELS = { vanlig:'Vanlig stege', sommar:'Sommarstege', pool:'Poolspel' };
+  const $ = id => document.getElementById(id);
+
+  function view(name){
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    $('view' + name).classList.add('active');
+  }
+  function header(kicker, title, lead){
+    $('hdrKicker').textContent = kicker;
+    $('hdrTitle').innerHTML = title;
+    $('hdrLead').textContent = lead;
+  }
+
+  // --- Skicka magisk länk ---
+  async function sendLink(){
+    const email = $('email').value.trim();
+    const msg = $('msg');
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { msg.className='msg err'; msg.textContent='Fyll i en giltig e-postadress.'; return; }
+    const btn = $('sendBtn');
+    btn.disabled = true; btn.textContent = 'Skickar…'; msg.textContent = '';
+    const { error } = await sb.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: window.location.origin + '/login.html' }
+    });
+    btn.disabled = false; btn.textContent = 'Skicka inloggningslänk';
+    if (error) {
+      msg.className = 'msg err';
+      msg.textContent = /rate|limit|seconds/i.test(error.message)
+        ? 'För många försök just nu — vänta en minut och prova igen.'
+        : 'Kunde inte skicka länken: ' + error.message;
+      return;
+    }
+    $('sentTo').textContent = email;
+    header('Min stege', 'Länk <span class="accent">skickad.</span>', 'Klicka på länken i mejlet för att logga in.');
+    view('Sent');
+  }
+
+  $('sendBtn').addEventListener('click', sendLink);
+  $('email').addEventListener('keydown', e => { if (e.key === 'Enter') sendLink(); });
+  $('retry').addEventListener('click', e => {
+    e.preventDefault();
+    header('Min stege', 'Logga <span class="accent">in.</span>', 'Vi mejlar en inloggningslänk — inget lösenord att komma ihåg.');
+    view('Login');
+  });
+
+  $('logoutBtn').addEventListener('click', async () => {
+    await sb.auth.signOut();
+    header('Min stege', 'Logga <span class="accent">in.</span>', 'Vi mejlar en inloggningslänk — inget lösenord att komma ihåg.');
+    $('email').value = '';
+    view('Login');
+  });
+
+  // --- Ladda dashboard ---
+  async function loadDash(session){
+    header('Min stege', 'Din <span class="accent">stege.</span>', 'Här hittar du dina registrerade stegar.');
+    view('Dash');
+    $('whoami').textContent = 'Inloggad som ' + session.user.email;
+
+    const { data, error } = await sb.from('tierplay_ladders')
+      .select('*').order('created_at', { ascending: false });
+
+    const box = $('ladders');
+    if (error) { box.innerHTML = '<div class="empty">Kunde inte hämta dina stegar just nu.</div>'; return; }
+    if (!data || !data.length) {
+      box.innerHTML = '<div class="empty">Du har inga registrerade stegar än.<br><a href="registrera.html">Registrera din första stege →</a></div>';
+      return;
+    }
+    box.innerHTML = data.map(l => `
+      <div class="ladder">
+        <div class="ladder-top">
+          <div>
+            <h3>${esc(l.ladder_name)}</h3>
+            <div class="club">${esc(l.club_name)}${l.location ? ' · ' + esc(l.location) : ''}</div>
+          </div>
+          <span class="badge ${l.status === 'active' ? 'b-active' : 'b-pending'}">${l.status === 'active' ? 'Aktiv' : 'Under uppsättning'}</span>
+        </div>
+        <div class="meta">
+          <span class="tag">${TYPE_LABELS[l.play_type] || esc(l.play_type)}</span>
+          ${(l.sports || []).map(s => `<span class="tag">${esc(s)}</span>`).join('')}
+          <span class="tag">Registrerad ${new Date(l.created_at).toLocaleDateString('sv-SE')}</span>
+        </div>
+      </div>`).join('');
+  }
+
+  function esc(s){ const d = document.createElement('div'); d.textContent = s == null ? '' : s; return d.innerHTML; }
+
+  // --- Starta: kolla om vi kommer tillbaka från en magisk länk ---
+  (async () => {
+    if (window.location.hash.includes('access_token') || window.location.search.includes('code=')) view('Loading');
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) loadDash(session);
+    else view('Login');
+  })();
+
+  sb.auth.onAuthStateChange((event, session) => {
+    if (session && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED')) {
+      if (window.location.hash) history.replaceState(null, '', window.location.pathname);
+      loadDash(session);
+    }
+  });
+</script>
+
+</body>
+</html>

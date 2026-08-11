@@ -227,9 +227,11 @@
         <div class="success">
           <div class="ball">🎾</div>
           <h2>Stegen är registrerad!</h2>
-          <p>Grymt! Vi sätter upp <b id="sumNameInline" style="color:var(--chalk)"></b> och hör av oss till dig så fort den är redo för första serven.</p>
+          <p>Grymt! Vi sätter upp <b id="sumNameInline" style="color:var(--chalk)"></b> och hör av oss så fort den är redo för första serven.</p>
+          <p style="margin-top:12px">📬 <b style="color:var(--chalk)">Kolla din mejl</b> — vi har skickat en bekräftelse med en inloggningslänk till <b id="sumMailInline" style="color:var(--chalk)"></b>. Via den kommer du åt din stege.</p>
           <div class="summary" id="summary"></div>
           <div class="nav-btns" style="justify-content:center">
+            <a class="btn" href="login.html">Till min stege</a>
             <a class="btn ghost" href="index.html">Till startsidan</a>
           </div>
         </div>
@@ -316,7 +318,19 @@
       });
       if (!res.ok) throw new Error('HTTP ' + res.status);
 
+      // Skicka bekräftelse-/inloggningsmejl till kontaktpersonen
+      try {
+        const redirect = encodeURIComponent(window.location.origin + '/login.html');
+        await fetch(SB_URL + '/auth/v1/otp?redirect_to=' + redirect, {
+          method: 'POST',
+          headers: { 'apikey': SB_KEY, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email, create_user: true,
+            gotrue_meta_security: {}, data: { ladder_name: payload.ladder_name, club_name: payload.club_name } })
+        });
+      } catch(_) { /* registreringen är sparad även om mejlet strular */ }
+
       document.getElementById('sumNameInline').textContent = payload.ladder_name;
+      document.getElementById('sumMailInline').textContent = email;
       document.getElementById('summary').innerHTML = `
         <div><span>Stege</span><b>${esc(payload.ladder_name)}</b></div>
         <div><span>Klubb</span><b>${esc(payload.club_name)}</b></div>

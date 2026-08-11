@@ -197,6 +197,32 @@
   }
   .checks li span{color:var(--muted)}
 
+  /* ---------- CASE / SHOWCASE ---------- */
+  .shot{
+    display:block;position:relative;border-radius:var(--radius);overflow:hidden;
+    border:1px solid var(--line);background:var(--panel);
+    box-shadow:0 30px 80px rgba(0,0,0,.45);
+    transition:transform .25s ease, border-color .25s ease;
+  }
+  .shot:hover{transform:translateY(-4px);border-color:rgba(31,191,107,.5)}
+  .shot img{display:block;width:100%;height:auto}
+  .shot-bar{
+    display:flex;justify-content:space-between;align-items:center;gap:12px;
+    padding:14px 20px;background:rgba(11,17,32,.92);border-top:1px solid var(--line);
+    font-size:14.5px;
+  }
+  .shot-dom{font-family:'Archivo Black',sans-serif;letter-spacing:.04em;font-size:14px}
+  .shot-cta{color:var(--clay2);font-weight:600}
+  .case-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:36px}
+  .case{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:26px 28px;transition:transform .2s ease,border-color .2s ease}
+  .case:hover{transform:translateY(-3px);border-color:rgba(31,191,107,.4)}
+  .case h3{font-size:18px;font-weight:600;margin-bottom:9px}
+  .case p{color:var(--muted);font-size:15.5px}
+  .case p b{color:var(--chalk);font-weight:600}
+  .case-cta{margin-top:36px;text-align:center}
+  .case-cta p{color:var(--muted);margin-bottom:18px}
+  @media(max-width:820px){.case-grid{grid-template-columns:1fr}}
+
   /* split */
   .split{display:grid;grid-template-columns:1fr 1fr;gap:20px}
   .split .card{padding:38px 34px}
@@ -259,10 +285,13 @@
       <a href="#koncept">Konceptet</a>
       <a href="#hurdetfunkar">Så funkar det</a>
       <a href="#tiers">Tiers</a>
-      <a href="#showcase">Båstadstegen</a>
+      <a href="#showcase">Kundcase</a>
       <a href="#for-vem">För vem</a>
     </div>
-    <a class="btn small" href="registrera.html">Registrera din stege</a>
+    <div style="display:flex;align-items:center;gap:16px">
+      <a href="login.html" style="font-size:14.5px;color:var(--muted)">Logga in</a>
+      <a class="btn small" href="registrera.html">Registrera din stege</a>
+    </div>
   </div>
 </nav>
 
@@ -283,7 +312,7 @@
     <div>
       <span class="kicker">Racketsport &middot; Stege &middot; Community</span>
       <h1>Starta er<br>egen <span class="accent">stege.</span></h1>
-      <p class="lead">Tierplay ger din klubb, hall eller ditt gäng ett eget stege-community — <strong>som <a href="https://bastadstegen.se" target="_blank" style="color:var(--chalk);text-decoration:underline;text-decoration-color:var(--clay2)">Båstadstegen</a>, fast ert.</strong> Jämna matcher, tydliga tiers och en klubbkänsla som lever hela säsongen.</p>
+      <p class="lead">Tierplay ger din klubb, hall eller ditt gäng ett eget stege-community — <strong>som <a href="https://bastadstegen.se" target="_blank" style="color:var(--chalk);text-decoration:underline;text-decoration-color:var(--clay2)">Båstadstegen</a>, fast ert.</strong> Kommunicera med gruppen via meddelanden, SMS och mejl, rapportera era resultat och låt ställningen visas snyggt och proffsigt för alla.</p>
       <div class="hero-cta">
         <a class="btn" href="registrera.html">Registrera din stege</a>
         <a class="btn ghost" href="#koncept">Läs mer</a>
@@ -327,24 +356,24 @@
   <div class="wrap">
     <div class="sec-head reveal">
       <span class="kicker">Konceptet</span>
-      <h2>Träning är bra.<br>Match är bättre.</h2>
-      <p>Den som spelar matcher mot jämna motståndare utvecklas snabbast. En egen stege gör det enkelt att hitta dem — vecka efter vecka, i ert eget community.</p>
+      <h2>Ett community —<br>inte ett kalkylblad.</h2>
+      <p>En stege är mer än en resultatlista. Det är en liten grupp som hörs, spelar och följer varandra. Tierplay ger er kanalerna, matcherna och en ställning som ser ut som proffsens.</p>
     </div>
     <div class="cards">
       <div class="card reveal">
         <div class="num">01</div>
-        <h3>Jämna matcher</h3>
-        <p>Du möter spelare i din egen tier. Inga blowouts, inga bortkastade timmar — varje match är på riktigt och kan sluta åt båda håll.</p>
+        <h3>Prata med gruppen</h3>
+        <p>Nå alla — eller bara din tier — med meddelanden i appen, SMS och mejl. Utmaningar, bokade tider och påminnelser hamnar där spelarna faktiskt läser dem.</p>
       </div>
       <div class="card reveal">
         <div class="num">02</div>
-        <h3>Tydliga tiers</h3>
-        <p>Glöm krångliga poängsystem. Du ser exakt var du står, vem du kan utmana och vad som krävs för att ta nästa steg.</p>
+        <h3>Rapportera resultat</h3>
+        <p>Efter matchen knappar vinnaren in resultatet på mobilen, motståndaren bekräftar. Klart. Inga papperslappar, ingen som jagar siffror i efterhand.</p>
       </div>
       <div class="card reveal">
         <div class="num">03</div>
-        <h3>Riktig utveckling</h3>
-        <p>Stegen bygger matchtuffhet som syns i turneringsspel. Det är skillnaden mellan att träna bra och att vinna när det gäller.</p>
+        <h3>Publik ställning</h3>
+        <p>Resultaten blir en snygg, offentlig ställning som uppdateras direkt — delbar med hela klubben. Det ser proffsigt ut, för det är hela poängen.</p>
       </div>
     </div>
   </div>
@@ -410,26 +439,45 @@
 </section>
 
 <section id="showcase">
-  <div class="wrap tiers-flex">
-    <div class="tiers-copy reveal">
-      <span class="kicker">Bevisat på banan</span>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">Kundcase</span>
       <h2>Båstadstegen<br>gick före.</h2>
-      <p><strong>Båstadstegen är originalet</strong> — ett levande stege-community i Båstad där spelare möts vecka efter vecka, klättrar mellan tiers och tar med sig matchtuffheten in i turneringsspel.</p>
-      <p>Tierplay är sättet att få samma sak där du spelar. Eget namn, egna spelare, egen kultur — stegen som motor.</p>
-      <a class="btn ghost" href="https://bastadstegen.se" target="_blank" rel="noopener">Se bastadstegen.se →</a>
+      <p>Båstad Tennissällskaps stege är originalet som Tierplay är byggt ur — på egen domän, med egen identitet och riktiga spelare varje vecka.</p>
     </div>
-    <div class="tierlist reveal">
-      <div class="tier-band">
-        <div class="tier-badge t-s">🎾</div>
-        <div><h4>Levande community</h4><p>Matcher varje vecka, säsong efter säsong.</p></div>
+
+    <a class="shot reveal" href="https://bastadstegen.se" target="_blank" rel="noopener">
+      <img src="bastadstegen.jpg" alt="Startsidan för bastadstegen.se — BTS Stegen, Båstad Tennissällskap" loading="lazy">
+      <span class="shot-bar">
+        <span class="shot-dom">bastadstegen.se</span>
+        <span class="shot-cta">Besök sajten →</span>
+      </span>
+    </a>
+
+    <div class="case-grid">
+      <div class="case reveal">
+        <h3>Egen domän, egen identitet</h3>
+        <p>BTS Stegen bor på <b>bastadstegen.se</b> med klubbens vapen, färger och tonalitet. Spelarna upplever klubbens sajt — inte en generisk plattform. Precis så blir din också: eget namn, egen adress.</p>
       </div>
-      <div class="tier-band">
-        <div class="tier-badge t-a">📈</div>
-        <div><h4>Resultat som syns</h4><p>Stegspelare som går djupt i turneringar.</p></div>
+      <div class="case reveal">
+        <h3>Från papp till mobil</h3>
+        <p>Sommarstegen hängde på en papptavla i klubbhuset — den som var där såg ställningen, alla andra fick fråga. Nu är samma stege i fickan: aktuell ställning, vem du får utmana och hela historiken.</p>
       </div>
-      <div class="tier-band">
-        <div class="tier-badge t-b">🏷️</div>
-        <div><h4>Egen identitet</h4><p>Eget namn, egen look — till och med egen merch.</p></div>
+      <div class="case reveal">
+        <h3>Mejl och SMS som når fram</h3>
+        <p>Nya omgångar, utmaningar och påminnelser går ut via mejl och SMS till rätt spelare. Ingen behöver hålla koll på en Facebook-tråd för att veta vad som händer.</p>
+      </div>
+      <div class="case reveal">
+        <h3>Resultat och redaktionellt</h3>
+        <p>Resultaten rapporteras direkt efter matchen och blir en publik ställning. Runt den byggs innehåll — artiklar, bilder och veckans matcher — som ger stegen liv mellan omgångarna.</p>
+      </div>
+    </div>
+
+    <div class="case-cta reveal">
+      <p>Vill du se hur det känns för en spelare? Kika på Båstadstegen — sen bygger vi din.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+        <a class="btn ghost" href="https://bastadstegen.se" target="_blank" rel="noopener">Se bastadstegen.se →</a>
+        <a class="btn" href="registrera.html">Registrera din stege</a>
       </div>
     </div>
   </div>
