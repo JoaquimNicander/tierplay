@@ -75,6 +75,8 @@
   input:focus,textarea:focus{border-color:var(--clay)}
   input::placeholder,textarea::placeholder{color:rgba(154,168,188,.55)}
   textarea{min-height:90px;resize:vertical}
+  .urlpreview{font-size:13.5px;color:var(--muted);margin-top:9px}
+  .urlpreview b{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--clay2);font-weight:600}
   .chips{display:flex;flex-wrap:wrap;gap:9px}
   .chip{padding:9px 17px;border-radius:999px;border:1.5px solid var(--line);font-size:14.5px;cursor:pointer;color:var(--muted);transition:all .15s;user-select:none}
   .chip:hover{border-color:rgba(31,191,107,.5)}
@@ -174,7 +176,8 @@
         <p class="sub">Berätta vad stegen ska heta och var den hör hemma.</p>
 
         <label for="ladderName">Stegens namn</label>
-        <input type="text" id="ladderName" placeholder="t.ex. Torekovsstegen" maxlength="80">
+        <input type="text" id="ladderName" placeholder="t.ex. Torekovsstegen" maxlength="80" oninput="updateSlug()">
+        <p class="urlpreview" id="urlPreview">Er adress blir <b>tierplay.se/…</b></p>
 
         <label for="clubName">Klubb / förening / gäng</label>
         <input type="text" id="clubName" placeholder="t.ex. Torekov Tennisklubb" maxlength="120">
@@ -288,6 +291,17 @@
 
   function val(id){ return document.getElementById(id).value.trim(); }
 
+  function slugify(t){
+    const map = {'å':'a','ä':'a','ö':'o','é':'e','è':'e','ü':'u','ø':'o','æ':'a'};
+    return (t||'').toLowerCase().replace(/[åäöéèüøæ]/g, c => map[c] || c)
+      .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+  }
+  function updateSlug(){
+    const s = slugify(val('ladderName'));
+    document.getElementById('urlPreview').innerHTML =
+      'Er adress blir <b>tierplay.se/' + (s || '…') + '</b>';
+  }
+
   async function submitLadder(){
     const err = document.getElementById('err3');
     const name = val('contactName'), email = val('contactEmail');
@@ -337,6 +351,7 @@
         ${payload.location ? `<div><span>Ort</span><b>${esc(payload.location)}</b></div>` : ''}
         <div><span>Speltyp</span><b>${TYPE_LABELS[payload.play_type]}</b></div>
         ${payload.sports.length ? `<div><span>Sporter</span><b>${payload.sports.map(esc).join(', ')}</b></div>` : ''}
+        <div><span>Adress</span><b>tierplay.se/${slugify(payload.ladder_name)}</b></div>
         <div><span>Kontakt</span><b>${esc(payload.contact_email)}</b></div>`;
       show('done');
     } catch(e) {

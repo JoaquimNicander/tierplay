@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mina stegar — Tierplay</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;1,400&family=Archivo+Black&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B1120; --bg2:#0F1730; --panel:#16203A; --line:rgba(235,242,250,.12);
+    --chalk:#F0F5FA; --muted:#9AA8BC; --brand:#1FBF6B; --brand2:#A8E92E; --blue:#3E7BFA;
+    --grad:linear-gradient(100deg,#1FBF6B,#A8E92E);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--chalk);font-family:'Archivo',system-ui,sans-serif;font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  nav{position:sticky;top:0;z-index:40;background:rgba(11,17,32,.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  .nav-inner{max-width:1080px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .logo{display:flex;align-items:center;gap:10px;font-family:'Archivo Black',sans-serif;font-size:19px;text-transform:uppercase;letter-spacing:.03em}
+  .who{font-size:13.5px;color:var(--muted);display:flex;align-items:center;gap:14px}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:999px;font-weight:600;font-size:14.5px;background:var(--grad);color:#08260f;border:none;cursor:pointer;font-family:inherit;transition:transform .15s}
+  .btn:hover{transform:translateY(-1px)}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--chalk)}
+  .btn.ghost:hover{border-color:var(--brand)}
+  .btn.small{padding:7px 15px;font-size:13.5px}
+  header{padding:44px 0 24px}
+  h1{font-family:'Archivo Black',sans-serif;font-size:clamp(28px,4.6vw,42px);text-transform:uppercase;margin-bottom:8px}
+  .lead{color:var(--muted)}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:28px 0 8px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+  .stat b{display:block;font-family:'Archivo Black',sans-serif;font-size:27px;line-height:1.1}
+  .stat span{font-size:12.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+  section{padding:30px 0}
+  .sechead{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:16px;flex-wrap:wrap}
+  h2{font-family:'Archivo Black',sans-serif;font-size:21px;text-transform:uppercase}
+  .sechead p{color:var(--muted);font-size:14px}
+  .lad{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin-bottom:14px}
+  .ladtop{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap}
+  .crest{width:44px;height:44px;min-width:44px;border-radius:11px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-family:'Archivo Black',sans-serif;font-size:15px;color:#08260f}
+  .ladmain{flex:1;min-width:220px}
+  .ladname{font-family:'Archivo Black',sans-serif;font-size:19px;text-transform:uppercase}
+  .ladsub{font-size:14px;color:var(--muted)}
+  .pills{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+  .pill{font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:5px 11px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+  .pill.on{background:rgba(31,191,107,.18);border-color:transparent;color:var(--brand2)}
+  .pill.off{background:rgba(255,159,69,.14);border-color:transparent;color:#FFC07A}
+  .ladacts{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+  .kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:18px;padding-top:16px;border-top:1px dashed var(--line)}
+  .kv div{font-size:14px}
+  .kv span{display:block;font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+  .kv a{color:var(--brand2)}
+  .url{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13.5px;color:var(--brand2);word-break:break-all}
+  table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  th,td{text-align:left;padding:13px 18px;font-size:14.5px;border-bottom:1px solid var(--line)}
+  th{font-size:11.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);background:rgba(235,242,250,.03)}
+  tr:last-child td{border-bottom:none}
+  .empty{color:var(--muted);text-align:center;padding:34px}
+  footer{border-top:1px solid var(--line);padding:30px 0;margin-top:30px;color:var(--muted);font-size:13.5px;text-align:center}
+  #gate{min-height:70vh;display:grid;place-items:center;text-align:center;padding:60px 24px}
+  #app{display:none}
+  @media(max-width:760px){ .stats{grid-template-columns:repeat(2,1fr)} }
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div>
+    <div class="spin" style="font-size:44px;margin-bottom:12px">🔒</div>
+    <p style="color:#9AA8BC;margin-bottom:20px" id="gateMsg">Kontrollerar inloggning…</p>
+    <a class="btn" href="/login.html">Till inloggningen</a>
+  </div>
+</div>
+
+<div id="app">
+  <nav>
+    <div class="nav-inner">
+      <a class="logo" href="/">
+        <svg viewBox="0 0 92 68" width="24" height="18" aria-hidden="true"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2E63E7"/><stop offset="100%" stop-color="#4E9BFA"/></linearGradient></defs><rect x="0" y="0" width="64" height="16" rx="8" fill="url(#g)"/><rect x="0" y="26" width="46" height="16" rx="8" fill="#3E7BFA" opacity=".62"/><rect x="0" y="52" width="30" height="16" rx="8" fill="#3E7BFA" opacity=".34"/><circle cx="78" cy="8" r="9" fill="#C6F532"/></svg>
+        Tierplay
+      </a>
+      <div class="who">
+        <span id="userEmail"></span>
+        <button class="btn ghost small" onclick="logout()">Logga ut</button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="wrap">
+    <h1>Mina stegar</h1>
+    <p class="lead" id="lead">Registrerade stegar och anmälningar.</p>
+    <div class="stats">
+      <div class="stat"><b id="sLadders">–</b><span>Stegar</span></div>
+      <div class="stat"><b id="sPublished">–</b><span>Publicerade</span></div>
+      <div class="stat"><b id="sPending">–</b><span>Väntar på start</span></div>
+      <div class="stat"><b id="sInterest">–</b><span>Anmälningar</span></div>
+    </div>
+  </header>
+
+  <section class="wrap">
+    <div class="sechead"><h2>Stegar</h2><p>Publicera för att göra stegsidan synlig på tierplay.se</p></div>
+    <div id="ladders"></div>
+  </section>
+
+  <section class="wrap">
+    <div class="sechead"><h2>Anmälningar & intresse</h2><p id="intNote"></p></div>
+    <div id="interest"></div>
+  </section>
+
+  <footer>Tierplay · administration</footer>
+</div>
+
+<script>
+const SB_URL = "https://xfzgkjapfauqdzvussbz.supabase.co";
+const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhmemdramFwZmF1cWR6dnVzc2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwOTEzNTAsImV4cCI6MjEwMDY2NzM1MH0.vxwgXzksOa_EXPL4QIWwufVezAFbGcyzPqeFubRdVkQ";
+const TYPES = { vanlig:'Vanlig stege', sommar:'Sommarstege', pool:'Poolspel' };
+
+let session = null;
+try { session = JSON.parse(localStorage.getItem('tp_session')||'null'); } catch(e){}
+
+function esc(s){ const d=document.createElement('div'); d.textContent=s??''; return d.innerHTML; }
+function initials(n){ return (n||'').split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase()||'TP'; }
+function dt(s){ try{ return new Date(s).toLocaleDateString('sv-SE',{day:'numeric',month:'short',year:'numeric'}); }catch(e){ return s; } }
+function logout(){ localStorage.removeItem('tp_session'); location.href='/login.html'; }
+
+function H(){ return { apikey:SB_KEY, Authorization:'Bearer '+session.access_token, 'Content-Type':'application/json' }; }
+
+async function boot(){
+  if (!session || !session.access_token) {
+    document.getElementById('gateMsg').textContent = 'Du behöver logga in för att se den här sidan.';
+    return;
+  }
+  const res = await fetch(`${SB_URL}/rest/v1/tierplay_ladders?select=*&order=created_at.desc`, { headers: H() });
+  if (res.status === 401) {
+    document.getElementById('gateMsg').textContent = 'Din session har gått ut — logga in igen.';
+    localStorage.removeItem('tp_session');
+    return;
+  }
+  const ladders = res.ok ? await res.json() : [];
+  document.getElementById('gate').style.display='none';
+  document.getElementById('app').style.display='block';
+  document.getElementById('userEmail').textContent = session.email || '';
+  renderLadders(ladders);
+
+  const ires = await fetch(`${SB_URL}/rest/v1/tierplay_interest?select=*&order=created_at.desc`, { headers: H() });
+  const interest = ires.ok ? await ires.json() : [];
+  renderInterest(interest);
+
+  document.getElementById('sLadders').textContent = ladders.length;
+  document.getElementById('sPublished').textContent = ladders.filter(l=>l.published).length;
+  document.getElementById('sPending').textContent = ladders.filter(l=>!l.published).length;
+  document.getElementById('sInterest').textContent = interest.length;
+}
+
+function renderLadders(rows){
+  const el = document.getElementById('ladders');
+  if(!rows.length){ el.innerHTML = `<div class="lad"><div class="empty">Inga stegar registrerade ännu.<br><a class="btn" style="margin-top:16px" href="/registrera.html">Registrera en stege</a></div></div>`; return; }
+  el.innerHTML = rows.map(l => `
+    <div class="lad">
+      <div class="ladtop">
+        <div class="crest" style="background:linear-gradient(100deg,${esc(l.brand_primary||'#1FBF6B')},${esc(l.brand_secondary||'#A8E92E')})">${esc(initials(l.ladder_name))}</div>
+        <div class="ladmain">
+          <div class="ladname">${esc(l.ladder_name)}</div>
+          <div class="ladsub">${esc(l.club_name)}${l.location?' · '+esc(l.location):''} · registrerad ${dt(l.created_at)}</div>
+          <div class="pills">
+            <span class="pill">${esc(TYPES[l.play_type]||l.play_type)}</span>
+            ${(l.sports||[]).map(s=>`<span class="pill">${esc(s)}</span>`).join('')}
+            <span class="pill ${l.published?'on':'off'}">${l.published?'Publicerad':'Ej publicerad'}</span>
+          </div>
+        </div>
+        <div class="ladacts">
+          ${l.published ? `<a class="btn ghost small" href="/${esc(l.slug)}" target="_blank">Visa sidan ↗</a>` : ''}
+          <button class="btn small" onclick="togglePub('${esc(l.slug)}', ${l.published?'false':'true'})">${l.published?'Avpublicera':'Publicera'}</button>
+        </div>
+      </div>
+      <div class="kv">
+        <div><span>Adress</span><span class="url">tierplay.se/${esc(l.slug)}</span></div>
+        <div><span>Kontakt</span>${esc(l.contact_name||'–')}</div>
+        <div><span>E-post</span><a href="mailto:${esc(l.contact_email)}">${esc(l.contact_email)}</a></div>
+        ${l.contact_phone?`<div><span>Telefon</span><a href="tel:${esc(l.contact_phone)}">${esc(l.contact_phone)}</a></div>`:''}
+        ${l.notes?`<div style="grid-column:1/-1"><span>Meddelande</span>${esc(l.notes)}</div>`:''}
+      </div>
+    </div>`).join('');
+}
+
+function renderInterest(rows){
+  const el = document.getElementById('interest');
+  document.getElementById('intNote').textContent = rows.length ? `${rows.length} mejladresser` : '';
+  if(!rows.length){ el.innerHTML = `<table><tr><td class="empty">Inga anmälningar ännu.</td></tr></table>`; return; }
+  el.innerHTML = `<table>
+    <tr><th>E-post</th><th>Källa</th><th>Datum</th></tr>
+    ${rows.map(r=>`<tr>
+      <td><a href="mailto:${esc(r.email)}" style="color:#A8E92E">${esc(r.email)}</a></td>
+      <td>${esc((r.source||'').startsWith('stege:') ? 'Stegsida: '+r.source.slice(6) : (r.source||'startsidan'))}</td>
+      <td>${dt(r.created_at)}</td></tr>`).join('')}
+  </table>`;
+}
+
+async function togglePub(slug, val){
+  const res = await fetch(`${SB_URL}/rest/v1/tierplay_ladders?slug=eq.${encodeURIComponent(slug)}`, {
+    method:'PATCH', headers:{...H(), Prefer:'return=minimal'},
+    body: JSON.stringify({ published: val === 'true' || val === true })
+  });
+  if (res.ok) location.reload();
+  else alert('Kunde inte uppdatera just nu.');
+}
+
+boot();
+</script>
+</body>
+</html>
