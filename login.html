@@ -180,7 +180,8 @@ document.getElementById('loginForm').addEventListener('submit', async ev => {
       });
       if (a.ok && (await a.json()).length) dest = stege ? `/admin.html?stege=${encodeURIComponent(stege)}` : '/admin.html';
     } catch(e) {}
-    location.href = dest;
+    const next = params.get('next');
+    location.href = next ? decodeURIComponent(next) : dest;
   }catch(e){
     msg.className = 'msg err'; msg.textContent = 'Något gick fel — försök igen.';
     btn.disabled = false; btn.textContent = 'Logga in';

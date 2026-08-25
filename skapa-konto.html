@@ -107,14 +107,22 @@
 const SB_URL = "https://xfzgkjapfauqdzvussbz.supabase.co";
 const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhmemdramFwZmF1cWR6dnVzc2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwOTEzNTAsImV4cCI6MjEwMDY2NzM1MH0.vxwgXzksOa_EXPL4QIWwufVezAFbGcyzPqeFubRdVkQ";
 
-const stege = new URLSearchParams(location.search).get('stege');
+const qp = new URLSearchParams(location.search);
+const stege = qp.get('stege');
+const kod = (qp.get('kod')||'').toUpperCase();
 function esc(s){ const d=document.createElement('div'); d.textContent=s??''; return d.innerHTML; }
 function initials(n){ return (n||'').split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase()||'TP'; }
 
 // Kom man hit från en stegsida visar vi vilken stege det gäller
-if (stege) {
-  fetch(`${SB_URL}/rest/v1/tierplay_public_ladders?slug=eq.${encodeURIComponent(stege)}&limit=1`,
-    { headers:{ apikey:SB_KEY, Authorization:'Bearer '+SB_KEY } })
+const lookup = kod
+  ? fetch(`${SB_URL}/rest/v1/rpc/tierplay_ladder_by_code`, { method:'POST',
+      headers:{ apikey:SB_KEY, Authorization:'Bearer '+SB_KEY, 'Content-Type':'application/json' },
+      body: JSON.stringify({ p_code: kod }) })
+  : (stege ? fetch(`${SB_URL}/rest/v1/tierplay_public_ladders?slug=eq.${encodeURIComponent(stege)}&limit=1`,
+      { headers:{ apikey:SB_KEY, Authorization:'Bearer '+SB_KEY } }) : null);
+
+if (lookup) {
+  lookup
     .then(r => r.ok ? r.json() : []).then(rows => {
       if (!rows.length) return;
       const d = rows[0];
@@ -163,13 +171,14 @@ document.getElementById('signupForm').addEventListener('submit', async ev => {
         email, expires_at: Date.now() + (data.expires_in||3600)*1000
       }));
       await saveProfile(data.access_token, data.user.id, { email, name, phone });
+      if (kod) { location.href = '/min-sida.html?kod=' + encodeURIComponent(kod); return; }
       if (stege) await joinLadder(data.access_token, data.user.id, stege);
       location.href = '/min-sida.html';
       return;
     }
 
     // Annars väntar mejlbekräftelsen
-    sessionStorage.setItem('tp_pending', JSON.stringify({ name, phone, stege }));
+    sessionStorage.setItem('tp_pending', JSON.stringify({ name, phone, stege, kod }));
     document.getElementById('form-wrap').classList.add('hidden');
     document.getElementById('done-wrap').classList.add('on');
     document.getElementById('doneTitle').textContent = 'Kolla din mejl';

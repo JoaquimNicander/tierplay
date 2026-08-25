@@ -60,6 +60,13 @@
   .empty h3{font-family:'Archivo Black',sans-serif;font-size:19px;text-transform:uppercase;margin-bottom:8px}
   .empty p{color:var(--muted);max-width:420px;margin:0 auto 20px}
 
+  .joinbox{display:flex;gap:11px;flex-wrap:wrap;align-items:center}
+  .joinbox input{flex:1;min-width:200px;max-width:260px;background:var(--panel);border:1.5px solid var(--line);
+    border-radius:12px;padding:13px 16px;color:var(--chalk);font-size:18px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.16em;text-transform:uppercase;text-align:center;outline:none}
+  .joinbox input:focus{border-color:var(--brand)}
+  .msg{margin-top:12px;font-size:14.5px;min-height:20px}
+  .msg.err{color:#FF8B7E}.msg.ok{color:var(--brand2)}
   .discover{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
   .dcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:block;transition:border-color .15s,transform .15s}
   .dcard:hover{border-color:var(--brand);transform:translateY(-2px)}
@@ -112,9 +119,13 @@
     <div id="myLadders"></div>
   </section>
 
-  <section class="wrap" id="discoverSection" style="display:none">
-    <div class="sechead"><h2>Fler stegar</h2><p>Stegar du kan gå med i</p></div>
-    <div class="discover" id="discover"></div>
+  <section class="wrap">
+    <div class="sechead"><h2>Gå med i en stege</h2><p>Har du fått en kod eller QR av din klubb?</p></div>
+    <div class="joinbox">
+      <input type="text" id="joinCode" placeholder="ABCD2345" maxlength="8" autocomplete="off" autocapitalize="characters">
+      <button class="btn" onclick="joinByCode()">Gå med</button>
+    </div>
+    <div class="msg" id="joinMsg"></div>
   </section>
 
   <footer>Tierplay · min sida</footer>
@@ -163,7 +174,7 @@ async function boot(){
     // Väntade en anmälan på att kontot skulle bli klart?
     try {
       const pend = JSON.parse(sessionStorage.getItem('tp_pending')||'null');
-      if (pend && pend.stege) { await joinBySlug(me.id, pend.stege); sessionStorage.removeItem('tp_pending'); }
+      if (pend && pend.kod) { await autoJoin(pend.kod); sessionStorage.removeItem('tp_pending'); }
     } catch(e){}
   }
 
@@ -183,7 +194,18 @@ async function boot(){
   document.getElementById('gate').style.display = 'none';
   document.getElementById('app').style.display = 'block';
 
+  const urlCode = new URLSearchParams(location.search).get('kod');
+  if (urlCode) { await autoJoin(urlCode.toUpperCase()); history.replaceState({}, '', '/min-sida.html'); }
+
   await renderLadders(me.id);
+}
+
+async function autoJoin(code){
+  try {
+    await fetch(`${SB_URL}/rest/v1/rpc/tierplay_join_by_code`, {
+      method:'POST', headers: H(), body: JSON.stringify({ p_code: code })
+    });
+  } catch(e){}
 }
 
 async function renderLadders(playerId){
@@ -205,7 +227,7 @@ async function renderLadders(playerId){
     el.innerHTML = `<div class="empty">
       <div class="ico">🪜</div>
       <h3>Du är inte med i någon stege ännu</h3>
-      <p>Hitta din klubbs stege nedan och anmäl dig — du hamnar längst ner och spelar dig uppåt.</p>
+      <p>Din klubb ger dig en kod eller en QR till stegen. Fyll i den nedan så är du med.</p>
     </div>`;
     document.getElementById('ladderNote').textContent = '';
   } else {
@@ -233,30 +255,33 @@ async function renderLadders(playerId){
     }).join('');
   }
 
-  // Stegar man inte är med i
-  const joinedIds = new Set(memberships.map(m => m.ladder_id));
-  const others = ladders.filter(l => !joinedIds.has(l.id));
-  if (others.length) {
-    document.getElementById('discoverSection').style.display = 'block';
-    document.getElementById('discover').innerHTML = others.map(l => `
-      <a class="dcard" href="/${esc(l.slug)}">
-        <b>${esc(l.ladder_name)}</b>
-        <span>${esc(l.club_name)}${l.location ? ' · ' + esc(l.location) : ''}</span>
-        <span class="go">Titta och gå med →</span>
-      </a>`).join('');
-  }
 }
 
-async function joinBySlug(playerId, slug){
+async function joinByCode(){
+  const code = document.getElementById('joinCode').value.trim().toUpperCase();
+  const msg = document.getElementById('joinMsg');
+  if (code.length < 4) { msg.className='msg err'; msg.textContent='Fyll i koden du fått av klubben.'; return; }
+  msg.className='msg'; msg.textContent='Ansluter…';
   try {
-    const r = await fetch(`${SB_URL}/rest/v1/tierplay_public_ladders?slug=eq.${encodeURIComponent(slug)}&select=id`, { headers: H() });
-    const rows = await r.json();
-    if (!rows.length) return;
-    await fetch(`${SB_URL}/rest/v1/tierplay_memberships`, {
-      method:'POST', headers:{ ...H(), Prefer:'return=minimal' },
-      body: JSON.stringify({ player_id: playerId, ladder_id: rows[0].id, status:'pending' })
+    const r = await fetch(`${SB_URL}/rest/v1/rpc/tierplay_join_by_code`, {
+      method:'POST', headers: H(), body: JSON.stringify({ p_code: code })
     });
-  } catch(e){}
+    const res = await r.json();
+    if (!r.ok || !res.ok) {
+      msg.className='msg err';
+      msg.textContent = res && res.error === 'bad_code'
+        ? 'Ingen stege med den koden.' : 'Kunde inte ansluta just nu.';
+      return;
+    }
+    msg.className='msg ok';
+    msg.textContent = res.status === 'member'
+      ? `Du är med i ${res.ladder_name}!`
+      : `Ansökan skickad till ${res.club_name}. Du hör av dem när den godkänts.`;
+    document.getElementById('joinCode').value = '';
+    setTimeout(()=>location.reload(), 1400);
+  } catch(e) {
+    msg.className='msg err'; msg.textContent='Något gick fel — försök igen.';
+  }
 }
 
 boot();
