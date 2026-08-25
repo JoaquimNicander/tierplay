@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Välj lösenord — Tierplay</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Archivo+Black&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0B1120;--panel:#16203A;--line:rgba(235,242,250,.12);--chalk:#F0F5FA;--muted:#9AA8BC;
+    --brand:#1FBF6B;--brand2:#A8E92E;--grad:linear-gradient(100deg,var(--brand),var(--brand2))}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--chalk);font-family:'Archivo',system-ui,sans-serif;font-size:17px;line-height:1.6;
+    min-height:100vh;display:grid;place-items:center;padding:32px 24px;
+    background-image:radial-gradient(700px 420px at 50% -10%, rgba(31,191,107,.18), transparent 62%)}
+  a{color:inherit;text-decoration:none}
+  .box{width:100%;max-width:420px}
+  .brandrow{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:26px;
+    font-family:'Archivo Black',sans-serif;font-size:20px;text-transform:uppercase;letter-spacing:.03em}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:32px}
+  h1{font-family:'Archivo Black',sans-serif;font-size:23px;text-transform:uppercase;margin-bottom:6px}
+  .sub{color:var(--muted);font-size:15px;margin-bottom:24px}
+  label{display:block;font-size:13px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin:16px 0 7px}
+  input{width:100%;background:rgba(235,242,250,.04);border:1.5px solid var(--line);border-radius:12px;padding:13px 16px;
+    color:var(--chalk);font-size:16px;font-family:inherit;outline:none;transition:border-color .15s}
+  input:focus{border-color:var(--brand)}
+  .hint{font-size:13px;color:var(--muted);margin-top:7px}
+  .btn{width:100%;margin-top:24px;padding:14px;border-radius:999px;font-weight:600;font-size:16px;
+    background:var(--grad);color:#08260f;border:none;cursor:pointer;font-family:inherit;transition:transform .15s}
+  .btn:hover{transform:translateY(-1px)}
+  .btn:disabled{opacity:.55;transform:none;cursor:default}
+  .msg{margin-top:16px;font-size:14.5px;min-height:20px}
+  .msg.err{color:#FF8B7E}.msg.ok{color:var(--brand2)}
+  .tp{display:flex;justify-content:center;gap:8px;margin-top:24px;font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="brandrow">
+    <svg viewBox="0 0 92 68" width="26" height="19" aria-hidden="true"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2E63E7"/><stop offset="100%" stop-color="#4E9BFA"/></linearGradient></defs><rect x="0" y="0" width="64" height="16" rx="8" fill="url(#g)"/><rect x="0" y="26" width="46" height="16" rx="8" fill="#3E7BFA" opacity=".62"/><rect x="0" y="52" width="30" height="16" rx="8" fill="#3E7BFA" opacity=".34"/><circle cx="78" cy="8" r="9" fill="#C6F532"/></svg>
+    Tierplay
+  </div>
+
+  <div class="card">
+    <h1 id="title">Välj ditt lösenord</h1>
+    <p class="sub" id="sub">Du har blivit inbjuden till Tierplay. Sätt ett lösenord så är du igång.</p>
+
+    <form id="form">
+      <label for="pw">Nytt lösenord</label>
+      <input type="password" id="pw" placeholder="Minst 8 tecken" autocomplete="new-password" minlength="8" required>
+      <p class="hint">Välj något du inte använder någon annanstans.</p>
+
+      <label for="pw2">Upprepa lösenordet</label>
+      <input type="password" id="pw2" placeholder="Skriv samma igen" autocomplete="new-password" minlength="8" required>
+
+      <button class="btn" type="submit" id="btn">Spara och logga in</button>
+    </form>
+    <div class="msg" id="msg"></div>
+  </div>
+
+  <div class="tp"><a href="/">Drivs av Tierplay</a></div>
+</div>
+
+<script>
+const SB_URL = "https://xfzgkjapfauqdzvussbz.supabase.co";
+const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhmemdramFwZmF1cWR6dnVzc2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwOTEzNTAsImV4cCI6MjEwMDY2NzM1MH0.vxwgXzksOa_EXPL4QIWwufVezAFbGcyzPqeFubRdVkQ";
+
+// Inbjudningslänken lägger tokens i URL-fragmentet
+const frag = new URLSearchParams(location.hash.replace(/^#/, ''));
+let accessToken = frag.get('access_token');
+const msg = document.getElementById('msg');
+
+if (frag.get('error_description')) {
+  msg.className = 'msg err';
+  msg.textContent = decodeURIComponent(frag.get('error_description')).includes('expired')
+    ? 'Länken har gått ut. Be om en ny inbjudan.'
+    : decodeURIComponent(frag.get('error_description'));
+} else if (!accessToken) {
+  document.getElementById('title').textContent = 'Länken saknas';
+  document.getElementById('sub').textContent =
+    'Öppna den här sidan via inbjudningslänken du fått, så kan du sätta ditt lösenord.';
+  document.getElementById('form').style.display = 'none';
+}
+
+document.getElementById('form').addEventListener('submit', async ev => {
+  ev.preventDefault();
+  const pw = document.getElementById('pw').value;
+  const pw2 = document.getElementById('pw2').value;
+  const btn = document.getElementById('btn');
+  msg.className = 'msg'; msg.textContent = '';
+
+  if (pw.length < 8) { msg.className = 'msg err'; msg.textContent = 'Lösenordet måste vara minst 8 tecken.'; return; }
+  if (pw !== pw2) { msg.className = 'msg err'; msg.textContent = 'Lösenorden är inte lika.'; return; }
+
+  btn.disabled = true; btn.textContent = 'Sparar…';
+  try {
+    const res = await fetch(SB_URL + '/auth/v1/user', {
+      method: 'PUT',
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: pw })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.msg || data.error_description || 'Kunde inte spara');
+
+    localStorage.setItem('tp_session', JSON.stringify({
+      access_token: accessToken,
+      email: data.email,
+      expires_at: Date.now() + 3600 * 1000
+    }));
+    msg.className = 'msg ok'; msg.textContent = 'Klart! Tar dig vidare… 🎾';
+    setTimeout(() => location.href = '/admin.html', 800);
+  } catch (e) {
+    msg.className = 'msg err';
+    msg.textContent = String(e.message).includes('expired')
+      ? 'Länken har gått ut. Be om en ny inbjudan.'
+      : 'Kunde inte spara lösenordet — försök igen.';
+    btn.disabled = false; btn.textContent = 'Spara och logga in';
+  }
+});
+</script>
+</body>
+</html>

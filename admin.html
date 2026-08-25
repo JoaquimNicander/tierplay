@@ -59,6 +59,27 @@
   th{font-size:11.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);background:rgba(235,242,250,.03)}
   tr:last-child td{border-bottom:none}
   .empty{color:var(--muted);text-align:center;padding:34px}
+  .role{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
+  .role.super{background:rgba(168,233,46,.18);color:var(--brand2)}
+  .role.adm{background:rgba(62,123,250,.18);color:#9CC3FF}
+  .warn{font-size:12.5px;color:#FFC07A}
+  .inviterow{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px}
+  .inviterow .fld{flex:1;min-width:170px}
+  .inviterow label{display:block;font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .inviterow input,.inviterow select{width:100%;background:rgba(235,242,250,.05);border:1.5px solid var(--line);
+    border-radius:10px;padding:11px 14px;color:var(--chalk);font-size:15px;font-family:inherit;outline:none}
+  .inviterow input:focus,.inviterow select:focus{border-color:var(--brand)}
+  .linkbox{background:rgba(31,191,107,.08);border:1px solid rgba(31,191,107,.35);border-radius:12px;padding:16px 18px;margin-bottom:16px}
+  .linkbox p{font-size:14px;color:var(--muted);margin-bottom:10px}
+  .linkbox .lnk{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+  .linkbox input{flex:1;min-width:240px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;
+    background:rgba(11,17,32,.6);border:1px solid var(--line);border-radius:9px;padding:10px 12px;color:var(--brand2)}
+  .sys{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+  .syscard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:block;transition:border-color .15s,transform .15s}
+  .syscard:hover{border-color:var(--brand);transform:translateY(-2px)}
+  .syscard b{display:block;font-family:'Archivo Black',sans-serif;font-size:14.5px;text-transform:uppercase;margin-bottom:5px}
+  .syscard span{font-size:13.5px;color:var(--muted);display:block}
+  .syscard .ext{font-size:12px;color:var(--brand2);margin-top:9px;display:block}
   footer{border-top:1px solid var(--line);padding:30px 0;margin-top:30px;color:var(--muted);font-size:13.5px;text-align:center}
   #gate{min-height:70vh;display:grid;place-items:center;text-align:center;padding:60px 24px}
   #app{display:none}
@@ -110,6 +131,40 @@
     <div id="interest"></div>
   </section>
 
+  <section class="wrap" id="usersSection" style="display:none">
+    <div class="sechead"><h2>Användare</h2><p>Bjud in någon till adminvyn — de sätter sitt eget lösenord via länken</p></div>
+
+    <div class="lad">
+      <div class="inviterow">
+        <div class="fld"><label for="invEmail">E-post</label><input type="email" id="invEmail" placeholder="namn@klubben.se"></div>
+        <div class="fld" style="max-width:190px"><label for="invName">Namn <span style="text-transform:none;letter-spacing:0">(valfritt)</span></label><input type="text" id="invName" placeholder="För- och efternamn"></div>
+        <div class="fld" style="max-width:160px"><label for="invRole">Roll</label>
+          <select id="invRole"><option value="admin">Admin</option><option value="superadmin">Superadmin</option></select></div>
+        <button class="btn" onclick="invite()" id="invBtn">Bjud in</button>
+      </div>
+      <div id="inviteResult"></div>
+      <div id="usersList"></div>
+    </div>
+  </section>
+
+  <section class="wrap" id="sysSection" style="display:none">
+    <div class="sechead"><h2>Systemen</h2><p>Genvägar till de tjänster Tierplay vilar på</p></div>
+    <div class="sys">
+      <a class="syscard" href="https://supabase.com/dashboard/project/xfzgkjapfauqdzvussbz/editor" target="_blank" rel="noopener">
+        <b>Databasen</b><span>Stegar, anmälningar, användare — Supabase (Jcx-puls-dev)</span><span class="ext">Öppna Table Editor ↗</span></a>
+      <a class="syscard" href="https://supabase.com/dashboard/project/xfzgkjapfauqdzvussbz/functions" target="_blank" rel="noopener">
+        <b>Funktioner</b><span>Mejlnotiser och användarhantering</span><span class="ext">Öppna Edge Functions ↗</span></a>
+      <a class="syscard" href="https://resend.com/emails" target="_blank" rel="noopener">
+        <b>Mejlen</b><span>Utskick, loggar och avsändardomäner</span><span class="ext">Öppna Resend ↗</span></a>
+      <a class="syscard" href="https://github.com/JoaquimNicander/tierplay" target="_blank" rel="noopener">
+        <b>Sajten</b><span>Källkoden till tierplay.se</span><span class="ext">Öppna GitHub ↗</span></a>
+      <a class="syscard" href="https://admin.websupport.se/sv/dns/15946259/records" target="_blank" rel="noopener">
+        <b>Domänen</b><span>DNS och e-post för tierplay.se</span><span class="ext">Öppna Websupport ↗</span></a>
+      <a class="syscard" href="https://supabase.com/dashboard/project/fueggdqtgmvldjbhcdfn/editor" target="_blank" rel="noopener">
+        <b>Båstadstegen</b><span>Förlagan — egen databas och egen org</span><span class="ext">Öppna Supabase ↗</span></a>
+    </div>
+  </section>
+
   <footer>Tierplay · administration</footer>
 </div>
 
@@ -119,6 +174,7 @@ const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 const TYPES = { vanlig:'Vanlig stege', sommar:'Sommarstege', pool:'Poolspel' };
 
 let session = null;
+let isSuper = false;
 try { session = JSON.parse(localStorage.getItem('tp_session')||'null'); } catch(e){}
 
 function esc(s){ const d=document.createElement('div'); d.textContent=s??''; return d.innerHTML; }
@@ -148,6 +204,20 @@ async function boot(){
   const ires = await fetch(`${SB_URL}/rest/v1/tierplay_interest?select=*&order=created_at.desc`, { headers: H() });
   const interest = ires.ok ? await ires.json() : [];
   renderInterest(interest);
+
+  // Roll avgör vad som visas
+  try {
+    const rr = await fetch(`${SB_URL}/rest/v1/tierplay_admins?select=email,role&limit=200`, { headers: H() });
+    const admins = rr.ok ? await rr.json() : [];
+    const meRow = admins.find(a => (a.email||'').toLowerCase() === (session.email||'').toLowerCase());
+    isSuper = meRow && meRow.role === 'superadmin';
+  } catch(e){}
+  document.getElementById('sysSection').style.display = 'block';
+  if (isSuper) {
+    document.getElementById('usersSection').style.display = 'block';
+    document.getElementById('lead').textContent = 'Superadmin — alla stegar, anmälningar och användare.';
+    loadUsers();
+  }
 
   document.getElementById('sLadders').textContent = ladders.length;
   document.getElementById('sPublished').textContent = ladders.filter(l=>l.published).length;
@@ -206,6 +276,94 @@ async function togglePub(slug, val){
   });
   if (res.ok) location.reload();
   else alert('Kunde inte uppdatera just nu.');
+}
+
+async function fn(action, payload){
+  const res = await fetch(`${SB_URL}/functions/v1/tierplay-users`, {
+    method:'POST', headers: H(), body: JSON.stringify({ action, ...(payload||{}) })
+  });
+  const data = await res.json().catch(()=>({}));
+  if (!res.ok) throw new Error(data.error || ('HTTP ' + res.status));
+  return data;
+}
+
+async function loadUsers(){
+  const el = document.getElementById('usersList');
+  try {
+    const { users } = await fn('list');
+    el.innerHTML = `<table>
+      <tr><th>Namn / e-post</th><th>Roll</th><th>Status</th><th></th></tr>
+      ${users.map(u => `<tr>
+        <td>${u.name ? `<b>${esc(u.name)}</b><br>` : ''}<span style="color:#9AA8BC">${esc(u.email)}</span></td>
+        <td><span class="role ${u.role === 'superadmin' ? 'super' : 'adm'}">${u.role === 'superadmin' ? 'Superadmin' : 'Admin'}</span></td>
+        <td>${u.has_account
+              ? (u.last_sign_in_at ? 'Aktiv · senast ' + dt(u.last_sign_in_at) : 'Konto skapat')
+              : '<span class="warn">Inbjuden — inte igång än</span>'}</td>
+        <td style="text-align:right;white-space:nowrap">
+          ${u.email.toLowerCase() === (session.email||'').toLowerCase() ? '<span style="color:#9AA8BC;font-size:13px">Du</span>' : `
+            <button class="btn ghost small" onclick="reinvite('${esc(u.email)}')">Ny länk</button>
+            <button class="btn ghost small" onclick="revoke('${esc(u.email)}')">Ta bort</button>`}
+        </td></tr>`).join('')}
+    </table>`;
+  } catch(e) {
+    el.innerHTML = `<div class="empty">Kunde inte hämta användarna: ${esc(e.message)}</div>`;
+  }
+}
+
+function showLink(res, email){
+  const box = document.getElementById('inviteResult');
+  if (!res.action_link) {
+    box.innerHTML = `<div class="linkbox"><p>Behörigheten är sparad för <b>${esc(email)}</b>, men ingen länk kunde skapas. Personen kan använda "glömt lösenord" på inloggningssidan.</p></div>`;
+    return;
+  }
+  box.innerHTML = `<div class="linkbox">
+      <p>${res.existing
+        ? `<b>${esc(email)}</b> hade redan ett konto — här är en länk för att sätta ett nytt lösenord.`
+        : `Inbjudan klar för <b>${esc(email)}</b>. Skicka länken så sätter personen sitt eget lösenord.`} Länken gäller i 24 timmar.</p>
+      <div class="lnk">
+        <input type="text" id="invLink" readonly value="${esc(res.action_link)}">
+        <button class="btn small" onclick="copyLink()">Kopiera</button>
+        <a class="btn ghost small" href="mailto:${esc(email)}?subject=${encodeURIComponent('Din inbjudan till Tierplay')}&body=${encodeURIComponent('Hej!\n\nDu har fått tillgång till Tierplays adminvy. Klicka på länken nedan och välj ett lösenord:\n\n' + res.action_link + '\n\nLänken gäller i 24 timmar.\n\n/Joaquim')}">Mejla den</a>
+      </div>
+    </div>`;
+}
+
+function copyLink(){
+  const i = document.getElementById('invLink');
+  i.select(); document.execCommand('copy');
+  const b = event.target; const t = b.textContent; b.textContent = 'Kopierad!';
+  setTimeout(()=>b.textContent = t, 1600);
+}
+
+async function invite(){
+  const email = document.getElementById('invEmail').value.trim();
+  const name = document.getElementById('invName').value.trim();
+  const role = document.getElementById('invRole').value;
+  const btn = document.getElementById('invBtn');
+  if (!email) return;
+  btn.disabled = true; btn.textContent = 'Bjuder in…';
+  try {
+    const res = await fn('invite', { email, name, role });
+    showLink(res, email);
+    document.getElementById('invEmail').value = '';
+    document.getElementById('invName').value = '';
+    loadUsers();
+  } catch(e) {
+    document.getElementById('inviteResult').innerHTML =
+      `<div class="linkbox" style="background:rgba(255,139,126,.08);border-color:rgba(255,139,126,.35)"><p style="color:#FF8B7E">Kunde inte bjuda in: ${esc(e.message)}</p></div>`;
+  }
+  btn.disabled = false; btn.textContent = 'Bjud in';
+}
+
+async function reinvite(email){
+  try { showLink(await fn('invite', { email }), email); }
+  catch(e){ alert('Kunde inte skapa länk: ' + e.message); }
+}
+
+async function revoke(email){
+  if (!confirm(`Ta bort ${email} från adminvyn?\n\nKontot finns kvar men personen kommer inte längre åt Tierplay.`)) return;
+  try { await fn('revoke', { email }); loadUsers(); }
+  catch(e){ alert('Kunde inte ta bort: ' + e.message); }
 }
 
 boot();
