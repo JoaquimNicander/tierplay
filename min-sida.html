@@ -23,15 +23,48 @@
   .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:999px;font-weight:600;font-size:14.5px;
     background:var(--grad);color:#08260f;border:none;cursor:pointer;font-family:inherit;transition:transform .15s}
   .btn:hover{transform:translateY(-1px)}
+  .btn:disabled{opacity:.55;transform:none;cursor:default}
   .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--chalk)}
   .btn.ghost:hover{border-color:var(--brand)}
   .btn.small{padding:7px 15px;font-size:13.5px}
 
-  header{padding:44px 0 10px;display:flex;gap:20px;align-items:center;flex-wrap:wrap}
-  .avatar{width:66px;height:66px;border-radius:18px;background:var(--grad);display:flex;align-items:center;justify-content:center;
-    font-family:'Archivo Black',sans-serif;font-size:24px;color:#08260f}
-  h1{font-family:'Archivo Black',sans-serif;font-size:clamp(26px,4.4vw,38px);text-transform:uppercase;margin-bottom:2px}
-  .lead{color:var(--muted);font-size:15px}
+  /* ---- Spelarkortet ---- */
+  .card{background:linear-gradient(160deg,var(--panel),#131C33);border:1px solid var(--line);border-radius:22px;
+    padding:26px;margin:34px 0 8px;position:relative;overflow:hidden}
+  .card::after{content:"";position:absolute;right:-70px;top:-70px;width:230px;height:230px;border-radius:50%;
+    background:radial-gradient(circle,rgba(31,191,107,.18),transparent 68%);pointer-events:none}
+  .cardtop{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+  .photo{width:104px;height:104px;min-width:104px;border-radius:26px;background:var(--grad);display:flex;align-items:center;
+    justify-content:center;font-family:'Archivo Black',sans-serif;font-size:36px;color:#08260f;overflow:hidden;position:relative}
+  .photo img{width:100%;height:100%;object-fit:cover}
+  .photo .cam{position:absolute;inset:auto 0 0 0;background:rgba(8,38,15,.72);color:#fff;font-size:11px;
+    text-align:center;padding:4px 0;letter-spacing:.05em;text-transform:uppercase;cursor:pointer}
+  .idbox{flex:1;min-width:220px}
+  h1{font-family:'Archivo Black',sans-serif;font-size:clamp(24px,4vw,34px);text-transform:uppercase;line-height:1.1}
+  .lead{color:var(--muted);font-size:14.5px;margin-top:3px}
+  .tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+  .tag{font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:6px 12px;border-radius:999px;
+    border:1px solid var(--line);color:var(--chalk);background:rgba(235,242,250,.05)}
+  .tag b{color:var(--brand2);font-weight:600}
+  .role{background:rgba(62,123,250,.16);border-color:transparent;color:#9CC0FF}
+
+  .nudge{background:rgba(168,233,46,.09);border:1px solid rgba(168,233,46,.32);border-radius:14px;
+    padding:14px 17px;margin-top:18px;font-size:14.5px;color:#DCF3A8}
+
+  /* ---- Formuläret ---- */
+  .form{margin-top:22px;border-top:1px solid var(--line);padding-top:22px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:15px}
+  label{display:block;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  input[type=text],select{width:100%;background:rgba(235,242,250,.04);border:1.5px solid var(--line);border-radius:12px;
+    padding:12px 15px;color:var(--chalk);font-size:15.5px;font-family:inherit;outline:none;transition:border-color .15s}
+  input[type=text]:focus,select:focus{border-color:var(--brand)}
+  select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,#9AA8BC 50%),linear-gradient(135deg,#9AA8BC 50%,transparent 50%);
+    background-position:calc(100% - 19px) 51%,calc(100% - 14px) 51%;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+  select option{background:#16203A;color:#F0F5FA}
+  .actions{display:flex;gap:11px;align-items:center;margin-top:20px;flex-wrap:wrap}
+  .msg{font-size:14.5px;min-height:20px}
+  .msg.err{color:#FF8B7E}.msg.ok{color:var(--brand2)}
+  #photoInput{display:none}
 
   section{padding:28px 0}
   .sechead{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:16px;flex-wrap:wrap}
@@ -65,14 +98,6 @@
     border-radius:12px;padding:13px 16px;color:var(--chalk);font-size:18px;
     font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.16em;text-transform:uppercase;text-align:center;outline:none}
   .joinbox input:focus{border-color:var(--brand)}
-  .msg{margin-top:12px;font-size:14.5px;min-height:20px}
-  .msg.err{color:#FF8B7E}.msg.ok{color:var(--brand2)}
-  .discover{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
-  .dcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:block;transition:border-color .15s,transform .15s}
-  .dcard:hover{border-color:var(--brand);transform:translateY(-2px)}
-  .dcard b{display:block;font-family:'Archivo Black',sans-serif;font-size:15px;text-transform:uppercase;margin-bottom:4px}
-  .dcard span{font-size:13.5px;color:var(--muted);display:block}
-  .dcard .go{font-size:12.5px;color:var(--brand2);margin-top:10px;display:block}
 
   footer{border-top:1px solid var(--line);padding:28px 0;margin-top:24px;color:var(--muted);font-size:13px;text-align:center}
   #gate{min-height:70vh;display:grid;place-items:center;text-align:center;padding:60px 24px}
@@ -106,13 +131,77 @@
     </div>
   </nav>
 
-  <header class="wrap">
-    <div class="avatar" id="avatar"></div>
-    <div>
-      <h1 id="playerName"></h1>
-      <p class="lead" id="playerMeta"></p>
+  <div class="wrap">
+    <div class="card">
+      <div class="cardtop">
+        <div class="photo" id="photo" title="Byt bild">
+          <span id="photoInitials"></span>
+          <div class="cam" onclick="document.getElementById('photoInput').click()">Byt bild</div>
+        </div>
+        <input type="file" id="photoInput" accept="image/*" onchange="uploadPhoto(this)">
+        <div class="idbox">
+          <h1 id="playerName"></h1>
+          <p class="lead" id="playerMeta"></p>
+          <div class="tags" id="playerTags"></div>
+        </div>
+      </div>
+
+      <div class="nudge" id="nudge" style="display:none">
+        Gör klart ditt spelarkort så vet motståndarna vem de möter — bild, hand, favoritslag och klubb.
+      </div>
+
+      <div class="form" id="form">
+        <div class="grid">
+          <div>
+            <label for="f_name">Namn</label>
+            <input type="text" id="f_name" placeholder="För- och efternamn" autocomplete="name">
+          </div>
+          <div>
+            <label for="f_club">Klubb</label>
+            <input type="text" id="f_club" placeholder="T.ex. Båstad Tennisklubb">
+          </div>
+          <div>
+            <label for="f_hometown">Var du bor</label>
+            <input type="text" id="f_hometown" placeholder="T.ex. Båstad">
+          </div>
+          <div>
+            <label for="f_hand">Hand</label>
+            <select id="f_hand">
+              <option value="">Välj…</option>
+              <option value="Högerhänt">Högerhänt</option>
+              <option value="Vänsterhänt">Vänsterhänt</option>
+            </select>
+          </div>
+          <div>
+            <label for="f_shot">Favoritslag</label>
+            <select id="f_shot">
+              <option value="">Välj…</option>
+              <option>Serve</option>
+              <option>Forehand</option>
+              <option>Backhand</option>
+              <option>Volley</option>
+              <option>Smash</option>
+              <option>Slice</option>
+              <option>Dropshot</option>
+              <option>Lobb</option>
+              <option>Retur</option>
+              <option>Väggspel</option>
+              <option>Bandeja</option>
+              <option>Vibora</option>
+            </select>
+          </div>
+          <div>
+            <label for="f_phone">Mobil <span style="text-transform:none;letter-spacing:0;font-weight:400">(valfritt)</span></label>
+            <input type="text" id="f_phone" placeholder="07X-XXX XX XX" autocomplete="tel">
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn" id="saveBtn" onclick="saveProfile()">Spara spelarkort</button>
+          <span class="msg" id="profMsg"></span>
+        </div>
+      </div>
     </div>
-  </header>
+  </div>
 
   <section class="wrap">
     <div class="sechead"><h2>Mina stegar</h2><p id="ladderNote"></p></div>
@@ -136,7 +225,7 @@ const SB_URL = "https://uybdduafhzedhkdzqahn.supabase.co";
 const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV5YmRkdWFmaHplZGhrZHpxYWhuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2MDYwMDksImV4cCI6MjEwMzE4MjAwOX0.g-wyA3uePq8-cMOWGtr0g7O_yOk0XeJ22_E5vH5KV-I";
 const TYPES = { vanlig:'Vanlig stege', sommar:'Sommarstege', pool:'Poolspel' };
 
-let session = null;
+let session = null, ME = null, PROFILE = null;
 try { session = JSON.parse(localStorage.getItem('tp_session')||'null'); } catch(e){}
 
 function esc(s){ const d=document.createElement('div'); d.textContent=s??''; return d.innerHTML; }
@@ -150,45 +239,42 @@ function needLogin(msg){
 }
 
 async function boot(){
-  if (!session || !session.access_token) return needLogin('Logga in för att se dina stegar.');
+  if (!session || !session.access_token) return needLogin('Logga in för att se ditt spelarkort.');
 
-  // Vem är jag?
   const meRes = await fetch(`${SB_URL}/auth/v1/user`, { headers:{ apikey:SB_KEY, Authorization:'Bearer '+session.access_token } });
   if (!meRes.ok) { localStorage.removeItem('tp_session'); return needLogin('Din session har gått ut — logga in igen.'); }
-  const me = await meRes.json();
+  ME = await meRes.json();
 
-  // Profilen — skapas automatiskt om den saknas (t.ex. efter mejlbekräftelse)
-  let profile = null;
-  const pRes = await fetch(`${SB_URL}/rest/v1/tierplay_players?id=eq.${me.id}&select=*`, { headers: H() });
-  const pRows = pRes.ok ? await pRes.json() : [];
-  profile = pRows[0];
+  // Profilen — skapas automatiskt om den saknas (t.ex. direkt efter mejlbekräftelse)
+  const pRes = await fetch(`${SB_URL}/rest/v1/tierplay_players?id=eq.${ME.id}&select=*`, { headers: H() });
+  PROFILE = (pRes.ok ? await pRes.json() : [])[0];
 
-  if (!profile) {
-    const meta = me.user_metadata || {};
+  if (!PROFILE) {
+    const meta = ME.user_metadata || {};
     const created = await fetch(`${SB_URL}/rest/v1/tierplay_players`, {
       method:'POST', headers:{ ...H(), Prefer:'resolution=merge-duplicates,return=representation' },
-      body: JSON.stringify({ id: me.id, email: me.email, name: meta.name || me.email.split('@')[0], phone: meta.phone || null })
+      body: JSON.stringify({ id: ME.id, email: ME.email, name: meta.name || ME.email.split('@')[0], phone: meta.phone || null })
     });
-    profile = created.ok ? (await created.json())[0] : { name: me.email, email: me.email };
+    PROFILE = created.ok ? (await created.json())[0] : { id: ME.id, name: ME.email, email: ME.email };
 
-    // Väntade en anmälan på att kontot skulle bli klart?
     try {
       const pend = JSON.parse(sessionStorage.getItem('tp_pending')||'null');
       if (pend && pend.kod) { await autoJoin(pend.kod); sessionStorage.removeItem('tp_pending'); }
     } catch(e){}
   }
 
-  document.getElementById('avatar').textContent = initials(profile.name);
-  document.getElementById('playerName').textContent = profile.name;
-  document.getElementById('playerMeta').textContent =
-    [profile.email, profile.phone].filter(Boolean).join(' · ');
+  renderCard();
 
   // Är jag också admin?
   try {
-    const aRes = await fetch(`${SB_URL}/rest/v1/tierplay_admins?select=email&limit=1`, { headers: H() });
+    const aRes = await fetch(`${SB_URL}/rest/v1/tierplay_admins?select=email,role&limit=1`, { headers: H() });
     const admins = aRes.ok ? await aRes.json() : [];
-    if (admins.length) document.getElementById('adminLink').innerHTML =
-      '<a href="/admin.html" style="color:var(--brand2)">Adminvyn →</a>';
+    if (admins.length) {
+      document.getElementById('adminLink').innerHTML = '<a href="/admin.html" style="color:var(--brand2)">Adminvyn →</a>';
+      const t = document.getElementById('playerTags');
+      t.insertAdjacentHTML('afterbegin',
+        `<span class="tag role">${admins[0].role === 'superadmin' ? 'Superadmin' : 'Admin'}</span>`);
+    }
   } catch(e){}
 
   document.getElementById('gate').style.display = 'none';
@@ -197,7 +283,108 @@ async function boot(){
   const urlCode = new URLSearchParams(location.search).get('kod');
   if (urlCode) { await autoJoin(urlCode.toUpperCase()); history.replaceState({}, '', '/min-sida.html'); }
 
-  await renderLadders(me.id);
+  await renderLadders(ME.id);
+}
+
+function renderCard(){
+  const p = PROFILE || {};
+  document.getElementById('playerName').textContent = p.name || '';
+  document.getElementById('playerMeta').textContent = [p.email, p.phone].filter(Boolean).join(' · ');
+  document.getElementById('photoInitials').textContent = initials(p.name);
+
+  const ph = document.getElementById('photo');
+  const old = ph.querySelector('img'); if (old) old.remove();
+  if (p.photo_url) {
+    const img = new Image();
+    img.src = p.photo_url;
+    img.alt = p.name || '';
+    ph.insertBefore(img, ph.firstChild);
+    document.getElementById('photoInitials').style.display = 'none';
+  } else {
+    document.getElementById('photoInitials').style.display = '';
+  }
+
+  const tags = [];
+  if (p.club)     tags.push(`<span class="tag">${esc(p.club)}</span>`);
+  if (p.hometown) tags.push(`<span class="tag">${esc(p.hometown)}</span>`);
+  if (p.hand)     tags.push(`<span class="tag">${esc(p.hand)}</span>`);
+  if (p.fav_shot) tags.push(`<span class="tag">Favoritslag: <b>${esc(p.fav_shot)}</b></span>`);
+  document.getElementById('playerTags').innerHTML = tags.join('');
+
+  // Fyll formuläret
+  document.getElementById('f_name').value     = p.name || '';
+  document.getElementById('f_club').value     = p.club || '';
+  document.getElementById('f_hometown').value = p.hometown || '';
+  document.getElementById('f_hand').value     = p.hand || '';
+  document.getElementById('f_shot').value     = p.fav_shot || '';
+  document.getElementById('f_phone').value    = p.phone || '';
+
+  const klart = p.club && p.hometown && p.hand && p.fav_shot && p.photo_url;
+  document.getElementById('nudge').style.display = klart ? 'none' : 'block';
+}
+
+async function saveProfile(){
+  const btn = document.getElementById('saveBtn'), msg = document.getElementById('profMsg');
+  const name = document.getElementById('f_name').value.trim();
+  if (!name) { msg.className='msg err'; msg.textContent='Namnet behövs.'; return; }
+
+  const body = {
+    name,
+    club:     document.getElementById('f_club').value.trim() || null,
+    hometown: document.getElementById('f_hometown').value.trim() || null,
+    hand:     document.getElementById('f_hand').value || null,
+    fav_shot: document.getElementById('f_shot').value || null,
+    phone:    document.getElementById('f_phone').value.trim() || null,
+    updated_at: new Date().toISOString()
+  };
+
+  btn.disabled = true; btn.textContent = 'Sparar…';
+  msg.className='msg'; msg.textContent='';
+  try {
+    const r = await fetch(`${SB_URL}/rest/v1/tierplay_players?id=eq.${ME.id}`, {
+      method:'PATCH', headers:{ ...H(), Prefer:'return=representation' }, body: JSON.stringify(body)
+    });
+    if (!r.ok) throw new Error(await r.text());
+    PROFILE = (await r.json())[0] || Object.assign(PROFILE, body);
+    renderCard();
+    msg.className='msg ok'; msg.textContent='Sparat 🎾';
+    setTimeout(()=>{ msg.textContent=''; }, 2600);
+  } catch(e) {
+    msg.className='msg err'; msg.textContent='Kunde inte spara just nu — försök igen.';
+  }
+  btn.disabled = false; btn.textContent = 'Spara spelarkort';
+}
+
+async function uploadPhoto(input){
+  const file = input.files && input.files[0];
+  if (!file) return;
+  const msg = document.getElementById('profMsg');
+  if (file.size > 5*1024*1024) { msg.className='msg err'; msg.textContent='Bilden får vara högst 5 MB.'; input.value=''; return; }
+
+  msg.className='msg'; msg.textContent='Laddar upp bilden…';
+  const ext = (file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'') || 'jpg';
+  const path = `${ME.id}/profil.${ext}`;
+  try {
+    const up = await fetch(`${SB_URL}/storage/v1/object/${encodeURI(path)}`.replace('/object/','/object/spelarbilder/'), {
+      method:'POST',
+      headers:{ apikey:SB_KEY, Authorization:'Bearer '+session.access_token, 'x-upsert':'true', 'Content-Type': file.type || 'image/jpeg' },
+      body: file
+    });
+    if (!up.ok) throw new Error(await up.text());
+    const url = `${SB_URL}/storage/v1/object/public/spelarbilder/${path}?v=${Date.now()}`;
+    const r = await fetch(`${SB_URL}/rest/v1/tierplay_players?id=eq.${ME.id}`, {
+      method:'PATCH', headers:{ ...H(), Prefer:'return=representation' },
+      body: JSON.stringify({ photo_url: url, updated_at: new Date().toISOString() })
+    });
+    if (!r.ok) throw new Error(await r.text());
+    PROFILE = (await r.json())[0] || Object.assign(PROFILE||{}, { photo_url:url });
+    renderCard();
+    msg.className='msg ok'; msg.textContent='Bilden är uppe 📸';
+    setTimeout(()=>{ msg.textContent=''; }, 2600);
+  } catch(e) {
+    msg.className='msg err'; msg.textContent='Kunde inte ladda upp bilden — försök igen.';
+  }
+  input.value='';
 }
 
 async function autoJoin(code){
@@ -254,7 +441,6 @@ async function renderLadders(playerId){
       </a>`;
     }).join('');
   }
-
 }
 
 async function joinByCode(){
