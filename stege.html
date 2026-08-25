@@ -163,7 +163,7 @@
       <h1 id="ladderName"></h1>
       <p class="tagline" id="tagline"></p>
       <div class="hero-cta">
-        <a class="btn" href="#gamed">Gå med i stegen</a>
+        <a class="btn" id="joinCta" href="#gamed">Gå med i stegen</a>
         <a class="btn ghost" href="#sahar">Så funkar det</a>
       </div>
       <div class="meta" id="meta"></div>
@@ -181,7 +181,7 @@
           <div class="ico">🪜</div>
           <h3>Stegen är nystartad</h3>
           <p>Inga matcher spelade ännu. Anmäl dig nedan — de första spelarna placeras i tiers när stegen drar igång.</p>
-          <a class="btn" href="#gamed">Anmäl dig först</a>
+          <a class="btn" id="joinFirst" href="#gamed">Anmäl dig först</a>
         </div>
         <div class="tiers" id="tiersPreview" style="display:none"></div>
       </div>
@@ -200,10 +200,10 @@
       <div class="join">
         <h2>Vill du spela?</h2>
         <p id="joinLead">Lämna din mejl så hör arrangören av sig med speltider och din placering.</p>
-        <form class="joinform" id="joinForm">
-          <input type="email" id="joinEmail" placeholder="din@mejladress.se" required>
-          <button class="btn" type="submit">Anmäl mig</button>
-        </form>
+        <div class="joinform">
+          <a class="btn" id="joinBtnMain" href="/skapa-konto.html">Skapa profil och gå med</a>
+          <a class="btn ghost" href="/login.html">Jag har redan konto</a>
+        </div>
         <div id="joinmsg"></div>
       </div>
     </div>
@@ -334,34 +334,16 @@ function render(d, slug){
     `<div class="step"><div class="num">${esc(n)}</div><h3>${esc(h)}</h3><p>${esc(p)}</p></div>`).join('');
 
   document.getElementById('joinLead').textContent =
-    `Lämna din mejl så hör ${d.club_name} av sig med speltider och din placering i ${d.ladder_name}.`;
+    `Skapa din spelarprofil så är du med i ${d.ladder_name} — och ser din placering direkt i Tierplay.`;
+  document.getElementById('joinCta').href = `/skapa-konto.html?stege=${encodeURIComponent(slug)}`;
+  document.getElementById('joinBtnMain').href = `/skapa-konto.html?stege=${encodeURIComponent(slug)}`;
+  document.getElementById('joinFirst').href = `/skapa-konto.html?stege=${encodeURIComponent(slug)}`;
   document.getElementById('footClub').textContent =
     `${d.ladder_name} · ${d.club_name}${d.location ? ' · ' + d.location : ''}`;
 
   document.getElementById('loading').classList.remove('on');
   document.getElementById('page').classList.add('on');
 
-  // Anmälan till stegen (samlas som intresse med stegens slug som källa)
-  document.getElementById('joinForm').addEventListener('submit', async ev => {
-    ev.preventDefault();
-    const email = document.getElementById('joinEmail').value.trim();
-    const msg = document.getElementById('joinmsg');
-    if(!email) return;
-    msg.textContent = 'Skickar…';
-    try{
-      const r = await fetch(SB_URL + '/rest/v1/tierplay_interest', {
-        method:'POST',
-        headers:{ apikey:SB_KEY, Authorization:'Bearer '+SB_KEY, 'Content-Type':'application/json', Prefer:'return=minimal' },
-        body: JSON.stringify({ email, source: 'stege:' + slug })
-      });
-      if (r.status === 409) { msg.textContent = 'Du är redan anmäld — vi hörs! 🎾'; return; }
-      if (!r.ok) throw new Error(r.status);
-      msg.textContent = 'Tack! Du är anmäld till stegen. 🎾';
-      document.getElementById('joinEmail').value = '';
-    }catch(e){
-      msg.textContent = 'Kunde inte skicka just nu — försök igen om en stund.';
-    }
-  });
 }
 
 load();

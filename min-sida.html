@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Min sida — Tierplay</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Archivo+Black&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0B1120;--bg2:#0F1730;--panel:#16203A;--line:rgba(235,242,250,.12);
+    --chalk:#F0F5FA;--muted:#9AA8BC;--brand:#1FBF6B;--brand2:#A8E92E;--blue:#3E7BFA;
+    --grad:linear-gradient(100deg,#1FBF6B,#A8E92E)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--chalk);font-family:'Archivo',system-ui,sans-serif;font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px}
+  nav{position:sticky;top:0;z-index:40;background:rgba(11,17,32,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  .nav-inner{max-width:900px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .logo{display:flex;align-items:center;gap:10px;font-family:'Archivo Black',sans-serif;font-size:19px;text-transform:uppercase;letter-spacing:.03em}
+  .who{font-size:13.5px;color:var(--muted);display:flex;align-items:center;gap:14px}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:999px;font-weight:600;font-size:14.5px;
+    background:var(--grad);color:#08260f;border:none;cursor:pointer;font-family:inherit;transition:transform .15s}
+  .btn:hover{transform:translateY(-1px)}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--chalk)}
+  .btn.ghost:hover{border-color:var(--brand)}
+  .btn.small{padding:7px 15px;font-size:13.5px}
+
+  header{padding:44px 0 10px;display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+  .avatar{width:66px;height:66px;border-radius:18px;background:var(--grad);display:flex;align-items:center;justify-content:center;
+    font-family:'Archivo Black',sans-serif;font-size:24px;color:#08260f}
+  h1{font-family:'Archivo Black',sans-serif;font-size:clamp(26px,4.4vw,38px);text-transform:uppercase;margin-bottom:2px}
+  .lead{color:var(--muted);font-size:15px}
+
+  section{padding:28px 0}
+  .sechead{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:16px;flex-wrap:wrap}
+  h2{font-family:'Archivo Black',sans-serif;font-size:20px;text-transform:uppercase}
+  .sechead p{color:var(--muted);font-size:14px}
+
+  .lad{display:flex;gap:16px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);
+    border-radius:16px;padding:20px 22px;margin-bottom:12px;flex-wrap:wrap;transition:border-color .15s}
+  .lad:hover{border-color:rgba(31,191,107,.45)}
+  .crest{width:46px;height:46px;min-width:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+    font-family:'Archivo Black',sans-serif;font-size:16px;color:#2a0f06}
+  .ladmain{flex:1;min-width:200px}
+  .ladname{font-family:'Archivo Black',sans-serif;font-size:18px;text-transform:uppercase}
+  .ladsub{font-size:14px;color:var(--muted)}
+  .pills{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+  .pill{font-size:11.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:5px 11px;border-radius:999px;
+    border:1px solid var(--line);color:var(--muted)}
+  .pill.member{background:rgba(31,191,107,.18);border-color:transparent;color:var(--brand2)}
+  .pill.pending{background:rgba(255,159,69,.15);border-color:transparent;color:#FFC07A}
+  .pos{text-align:center;min-width:64px}
+  .pos b{display:block;font-family:'Archivo Black',sans-serif;font-size:26px;line-height:1}
+  .pos span{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+
+  .empty{background:var(--panel);border:1px dashed var(--line);border-radius:16px;padding:40px 28px;text-align:center}
+  .empty .ico{font-size:42px;margin-bottom:12px}
+  .empty h3{font-family:'Archivo Black',sans-serif;font-size:19px;text-transform:uppercase;margin-bottom:8px}
+  .empty p{color:var(--muted);max-width:420px;margin:0 auto 20px}
+
+  .discover{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+  .dcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:block;transition:border-color .15s,transform .15s}
+  .dcard:hover{border-color:var(--brand);transform:translateY(-2px)}
+  .dcard b{display:block;font-family:'Archivo Black',sans-serif;font-size:15px;text-transform:uppercase;margin-bottom:4px}
+  .dcard span{font-size:13.5px;color:var(--muted);display:block}
+  .dcard .go{font-size:12.5px;color:var(--brand2);margin-top:10px;display:block}
+
+  footer{border-top:1px solid var(--line);padding:28px 0;margin-top:24px;color:var(--muted);font-size:13px;text-align:center}
+  #gate{min-height:70vh;display:grid;place-items:center;text-align:center;padding:60px 24px}
+  #app{display:none}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div>
+    <div style="font-size:44px;margin-bottom:12px">🎾</div>
+    <p style="color:#9AA8BC;margin-bottom:20px" id="gateMsg">Hämtar din profil…</p>
+    <div id="gateActions" style="display:none;gap:10px;justify-content:center;flex-wrap:wrap">
+      <a class="btn" href="/login.html">Logga in</a>
+      <a class="btn ghost" href="/skapa-konto.html">Skapa konto</a>
+    </div>
+  </div>
+</div>
+
+<div id="app">
+  <nav>
+    <div class="nav-inner">
+      <a class="logo" href="/">
+        <svg viewBox="0 0 92 68" width="24" height="18" aria-hidden="true"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2E63E7"/><stop offset="100%" stop-color="#4E9BFA"/></linearGradient></defs><rect x="0" y="0" width="64" height="16" rx="8" fill="url(#g)"/><rect x="0" y="26" width="46" height="16" rx="8" fill="#3E7BFA" opacity=".62"/><rect x="0" y="52" width="30" height="16" rx="8" fill="#3E7BFA" opacity=".34"/><circle cx="78" cy="8" r="9" fill="#C6F532"/></svg>
+        Tierplay
+      </a>
+      <div class="who">
+        <span id="adminLink"></span>
+        <button class="btn ghost small" onclick="logout()">Logga ut</button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="wrap">
+    <div class="avatar" id="avatar"></div>
+    <div>
+      <h1 id="playerName"></h1>
+      <p class="lead" id="playerMeta"></p>
+    </div>
+  </header>
+
+  <section class="wrap">
+    <div class="sechead"><h2>Mina stegar</h2><p id="ladderNote"></p></div>
+    <div id="myLadders"></div>
+  </section>
+
+  <section class="wrap" id="discoverSection" style="display:none">
+    <div class="sechead"><h2>Fler stegar</h2><p>Stegar du kan gå med i</p></div>
+    <div class="discover" id="discover"></div>
+  </section>
+
+  <footer>Tierplay · min sida</footer>
+</div>
+
+<script>
+const SB_URL = "https://xfzgkjapfauqdzvussbz.supabase.co";
+const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhmemdramFwZmF1cWR6dnVzc2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwOTEzNTAsImV4cCI6MjEwMDY2NzM1MH0.vxwgXzksOa_EXPL4QIWwufVezAFbGcyzPqeFubRdVkQ";
+const TYPES = { vanlig:'Vanlig stege', sommar:'Sommarstege', pool:'Poolspel' };
+
+let session = null;
+try { session = JSON.parse(localStorage.getItem('tp_session')||'null'); } catch(e){}
+
+function esc(s){ const d=document.createElement('div'); d.textContent=s??''; return d.innerHTML; }
+function initials(n){ return (n||'').split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase()||'?'; }
+function logout(){ localStorage.removeItem('tp_session'); location.href='/'; }
+function H(){ return { apikey:SB_KEY, Authorization:'Bearer '+session.access_token, 'Content-Type':'application/json' }; }
+
+function needLogin(msg){
+  document.getElementById('gateMsg').textContent = msg;
+  document.getElementById('gateActions').style.display = 'flex';
+}
+
+async function boot(){
+  if (!session || !session.access_token) return needLogin('Logga in för att se dina stegar.');
+
+  // Vem är jag?
+  const meRes = await fetch(`${SB_URL}/auth/v1/user`, { headers:{ apikey:SB_KEY, Authorization:'Bearer '+session.access_token } });
+  if (!meRes.ok) { localStorage.removeItem('tp_session'); return needLogin('Din session har gått ut — logga in igen.'); }
+  const me = await meRes.json();
+
+  // Profilen — skapas automatiskt om den saknas (t.ex. efter mejlbekräftelse)
+  let profile = null;
+  const pRes = await fetch(`${SB_URL}/rest/v1/tierplay_players?id=eq.${me.id}&select=*`, { headers: H() });
+  const pRows = pRes.ok ? await pRes.json() : [];
+  profile = pRows[0];
+
+  if (!profile) {
+    const meta = me.user_metadata || {};
+    const created = await fetch(`${SB_URL}/rest/v1/tierplay_players`, {
+      method:'POST', headers:{ ...H(), Prefer:'resolution=merge-duplicates,return=representation' },
+      body: JSON.stringify({ id: me.id, email: me.email, name: meta.name || me.email.split('@')[0], phone: meta.phone || null })
+    });
+    profile = created.ok ? (await created.json())[0] : { name: me.email, email: me.email };
+
+    // Väntade en anmälan på att kontot skulle bli klart?
+    try {
+      const pend = JSON.parse(sessionStorage.getItem('tp_pending')||'null');
+      if (pend && pend.stege) { await joinBySlug(me.id, pend.stege); sessionStorage.removeItem('tp_pending'); }
+    } catch(e){}
+  }
+
+  document.getElementById('avatar').textContent = initials(profile.name);
+  document.getElementById('playerName').textContent = profile.name;
+  document.getElementById('playerMeta').textContent =
+    [profile.email, profile.phone].filter(Boolean).join(' · ');
+
+  // Är jag också admin?
+  try {
+    const aRes = await fetch(`${SB_URL}/rest/v1/tierplay_admins?select=email&limit=1`, { headers: H() });
+    const admins = aRes.ok ? await aRes.json() : [];
+    if (admins.length) document.getElementById('adminLink').innerHTML =
+      '<a href="/admin.html" style="color:var(--brand2)">Adminvyn →</a>';
+  } catch(e){}
+
+  document.getElementById('gate').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+
+  await renderLadders(me.id);
+}
+
+async function renderLadders(playerId){
+  const [mRes, lRes, sRes] = await Promise.all([
+    fetch(`${SB_URL}/rest/v1/tierplay_memberships?player_id=eq.${playerId}&select=*&order=joined_at.desc`, { headers: H() }),
+    fetch(`${SB_URL}/rest/v1/tierplay_public_ladders?select=*`, { headers: H() }),
+    fetch(`${SB_URL}/rest/v1/tierplay_ladder_stats?select=*`, { headers: H() })
+  ]);
+  const memberships = mRes.ok ? await mRes.json() : [];
+  const ladders = lRes.ok ? await lRes.json() : [];
+  const stats = sRes.ok ? await sRes.json() : [];
+
+  const byId = {}; ladders.forEach(l => byId[l.id] = l);
+  const statBySlug = {}; stats.forEach(s => statBySlug[s.slug] = s);
+  const mine = memberships.filter(m => m.status !== 'left' && byId[m.ladder_id]);
+
+  const el = document.getElementById('myLadders');
+  if (!mine.length) {
+    el.innerHTML = `<div class="empty">
+      <div class="ico">🪜</div>
+      <h3>Du är inte med i någon stege ännu</h3>
+      <p>Hitta din klubbs stege nedan och anmäl dig — du hamnar längst ner och spelar dig uppåt.</p>
+    </div>`;
+    document.getElementById('ladderNote').textContent = '';
+  } else {
+    document.getElementById('ladderNote').textContent =
+      `${mine.length} ${mine.length === 1 ? 'stege' : 'stegar'}`;
+    el.innerHTML = mine.map(m => {
+      const l = byId[m.ladder_id];
+      const st = statBySlug[l.slug] || {};
+      return `<a class="lad" href="/${esc(l.slug)}">
+        <div class="crest" style="background:linear-gradient(100deg,${esc(l.brand_primary||'#1FBF6B')},${esc(l.brand_secondary||'#A8E92E')})">${esc(initials(l.ladder_name))}</div>
+        <div class="ladmain">
+          <div class="ladname">${esc(l.ladder_name)}</div>
+          <div class="ladsub">${esc(l.club_name)}${l.location ? ' · ' + esc(l.location) : ''}</div>
+          <div class="pills">
+            <span class="pill">${esc(TYPES[l.play_type] || l.play_type)}</span>
+            ${(l.sports||[]).map(s => `<span class="pill">${esc(s)}</span>`).join('')}
+            <span class="pill ${m.status === 'member' ? 'member' : 'pending'}">${m.status === 'member' ? 'Med i stegen' : 'Väntar på start'}</span>
+          </div>
+        </div>
+        <div class="pos">
+          <b>${m.position ? m.position : '–'}</b>
+          <span>${m.position ? 'Placering' : (st.members ? st.members + ' spelare' : 'Ny')}</span>
+        </div>
+      </a>`;
+    }).join('');
+  }
+
+  // Stegar man inte är med i
+  const joinedIds = new Set(memberships.map(m => m.ladder_id));
+  const others = ladders.filter(l => !joinedIds.has(l.id));
+  if (others.length) {
+    document.getElementById('discoverSection').style.display = 'block';
+    document.getElementById('discover').innerHTML = others.map(l => `
+      <a class="dcard" href="/${esc(l.slug)}">
+        <b>${esc(l.ladder_name)}</b>
+        <span>${esc(l.club_name)}${l.location ? ' · ' + esc(l.location) : ''}</span>
+        <span class="go">Titta och gå med →</span>
+      </a>`).join('');
+  }
+}
+
+async function joinBySlug(playerId, slug){
+  try {
+    const r = await fetch(`${SB_URL}/rest/v1/tierplay_public_ladders?slug=eq.${encodeURIComponent(slug)}&select=id`, { headers: H() });
+    const rows = await r.json();
+    if (!rows.length) return;
+    await fetch(`${SB_URL}/rest/v1/tierplay_memberships`, {
+      method:'POST', headers:{ ...H(), Prefer:'return=minimal' },
+      body: JSON.stringify({ player_id: playerId, ladder_id: rows[0].id, status:'pending' })
+    });
+  } catch(e){}
+}
+
+boot();
+</script>
+</body>
+</html>

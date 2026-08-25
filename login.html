@@ -58,7 +58,7 @@
 
   <div class="card">
     <h1 id="title">Logga in</h1>
-    <p class="sub" id="subtitle">Logga in för att administrera din stege — spelare, matcher och ställning.</p>
+    <p class="sub" id="subtitle">Logga in för att se dina stegar, din placering och kommande matcher.</p>
 
     <form id="loginForm">
       <label for="email">E-post</label>
@@ -75,7 +75,7 @@
     <div class="msg" id="msg"></div>
 
     <div class="foot">
-      Ingen stege ännu? <a href="/registrera.html">Registrera din stege</a>
+      Ny här? <a href="/skapa-konto.html">Skapa spelarkonto</a> · <a href="/registrera.html">Registrera en stege</a>
     </div>
   </div>
 
@@ -172,7 +172,15 @@ document.getElementById('loginForm').addEventListener('submit', async ev => {
       expires_at: Date.now() + (data.expires_in||3600)*1000
     }));
     msg.className = 'msg ok'; msg.textContent = 'Inloggad! 🎾';
-    location.href = stege ? `/admin.html?stege=${encodeURIComponent(stege)}` : '/admin.html';
+    // Admin? Till adminvyn. Annars spelarens egen sida.
+    let dest = '/min-sida.html';
+    try {
+      const a = await fetch(`${SB_URL}/rest/v1/tierplay_admins?select=email&limit=1`, {
+        headers: { apikey: SB_KEY, Authorization: 'Bearer ' + data.access_token }
+      });
+      if (a.ok && (await a.json()).length) dest = stege ? `/admin.html?stege=${encodeURIComponent(stege)}` : '/admin.html';
+    } catch(e) {}
+    location.href = dest;
   }catch(e){
     msg.className = 'msg err'; msg.textContent = 'Något gick fel — försök igen.';
     btn.disabled = false; btn.textContent = 'Logga in';

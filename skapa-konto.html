@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skapa spelarkonto — Tierplay</title>
+<meta name="description" content="Skapa din spelarprofil på Tierplay och gå med i stegar hos din klubb.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Archivo+Black&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0B1120;--panel:#16203A;--line:rgba(235,242,250,.12);--chalk:#F0F5FA;--muted:#9AA8BC;
+    --brand:#1FBF6B;--brand2:#A8E92E;--grad:linear-gradient(100deg,var(--brand),var(--brand2))}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--chalk);font-family:'Archivo',system-ui,sans-serif;font-size:17px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;min-height:100vh;display:grid;place-items:center;padding:32px 24px;
+    background-image:radial-gradient(720px 430px at 50% -10%, rgba(31,191,107,.18), transparent 62%)}
+  a{color:inherit;text-decoration:none}
+  .box{width:100%;max-width:440px}
+  .brandrow{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:24px;
+    font-family:'Archivo Black',sans-serif;font-size:20px;text-transform:uppercase;letter-spacing:.03em}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:32px}
+  h1{font-family:'Archivo Black',sans-serif;font-size:23px;text-transform:uppercase;margin-bottom:6px}
+  .sub{color:var(--muted);font-size:15px;margin-bottom:22px}
+  .joining{display:flex;gap:12px;align-items:center;background:rgba(31,191,107,.08);border:1px solid rgba(31,191,107,.3);
+    border-radius:13px;padding:14px 16px;margin-bottom:22px}
+  .joining .crest{width:38px;height:38px;min-width:38px;border-radius:10px;background:var(--grad);display:flex;
+    align-items:center;justify-content:center;font-family:'Archivo Black',sans-serif;font-size:14px;color:#08260f}
+  .joining b{display:block;font-size:15px}
+  .joining span{font-size:13px;color:var(--muted)}
+  label{display:block;font-size:12.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin:15px 0 6px}
+  label .opt{font-weight:400;text-transform:none;letter-spacing:0}
+  input{width:100%;background:rgba(235,242,250,.04);border:1.5px solid var(--line);border-radius:12px;padding:13px 16px;
+    color:var(--chalk);font-size:16px;font-family:inherit;outline:none;transition:border-color .15s}
+  input:focus{border-color:var(--brand)}
+  input::placeholder{color:rgba(154,168,188,.55)}
+  .hint{font-size:12.5px;color:var(--muted);margin-top:6px}
+  .btn{width:100%;margin-top:24px;padding:14px;border-radius:999px;font-weight:600;font-size:16px;background:var(--grad);
+    color:#08260f;border:none;cursor:pointer;font-family:inherit;transition:transform .15s}
+  .btn:hover{transform:translateY(-1px)}
+  .btn:disabled{opacity:.55;transform:none;cursor:default}
+  .msg{margin-top:16px;font-size:14.5px;min-height:20px}
+  .msg.err{color:#FF8B7E}.msg.ok{color:var(--brand2)}
+  .foot{text-align:center;margin-top:20px;font-size:13.5px;color:var(--muted)}
+  .foot a{color:var(--brand2)}
+  .done{text-align:center;padding:12px 0}
+  .done .ball{font-size:50px;margin-bottom:12px}
+  .done h2{font-family:'Archivo Black',sans-serif;font-size:24px;text-transform:uppercase;margin-bottom:10px}
+  .done p{color:var(--muted);margin-bottom:8px}
+  #form-wrap.hidden{display:none}
+  #done-wrap{display:none}
+  #done-wrap.on{display:block}
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="brandrow">
+    <svg viewBox="0 0 92 68" width="26" height="19" aria-hidden="true"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2E63E7"/><stop offset="100%" stop-color="#4E9BFA"/></linearGradient></defs><rect x="0" y="0" width="64" height="16" rx="8" fill="url(#g)"/><rect x="0" y="26" width="46" height="16" rx="8" fill="#3E7BFA" opacity=".62"/><rect x="0" y="52" width="30" height="16" rx="8" fill="#3E7BFA" opacity=".34"/><circle cx="78" cy="8" r="9" fill="#C6F532"/></svg>
+    Tierplay
+  </div>
+
+  <div class="card">
+    <div id="form-wrap">
+      <h1>Skapa spelarkonto</h1>
+      <p class="sub">En profil — alla dina stegar. Gå med i din klubbs stege och se din ställning var du än spelar.</p>
+
+      <div class="joining" id="joining" style="display:none">
+        <div class="crest" id="joinCrest"></div>
+        <div><b id="joinName"></b><span id="joinClub"></span></div>
+      </div>
+
+      <form id="signupForm">
+        <label for="name">Namn</label>
+        <input type="text" id="name" placeholder="För- och efternamn" autocomplete="name" required>
+
+        <label for="email">E-post</label>
+        <input type="email" id="email" placeholder="din@mejladress.se" autocomplete="email" required>
+
+        <label for="phone">Mobilnummer <span class="opt">(valfritt)</span></label>
+        <input type="tel" id="phone" placeholder="07X-XXX XX XX" autocomplete="tel">
+        <p class="hint">Används för att din klubb ska hitta dig i stegen — och för matchpåminnelser.</p>
+
+        <label for="pw">Lösenord</label>
+        <input type="password" id="pw" placeholder="Minst 8 tecken" autocomplete="new-password" minlength="8" required>
+
+        <button class="btn" type="submit" id="btn">Skapa konto</button>
+      </form>
+      <div class="msg" id="msg"></div>
+
+      <div class="foot">Har du redan ett konto? <a href="/login.html">Logga in</a></div>
+    </div>
+
+    <div id="done-wrap">
+      <div class="done">
+        <div class="ball">🎾</div>
+        <h2 id="doneTitle">Nästan klart</h2>
+        <p id="doneText"></p>
+        <a class="btn" id="doneBtn" href="/min-sida.html" style="display:none">Till min sida</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot"><a href="/">Drivs av Tierplay</a></div>
+</div>
+
+<script>
+const SB_URL = "https://xfzgkjapfauqdzvussbz.supabase.co";
+const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhmemdramFwZmF1cWR6dnVzc2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwOTEzNTAsImV4cCI6MjEwMDY2NzM1MH0.vxwgXzksOa_EXPL4QIWwufVezAFbGcyzPqeFubRdVkQ";
+
+const stege = new URLSearchParams(location.search).get('stege');
+function esc(s){ const d=document.createElement('div'); d.textContent=s??''; return d.innerHTML; }
+function initials(n){ return (n||'').split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase()||'TP'; }
+
+// Kom man hit från en stegsida visar vi vilken stege det gäller
+if (stege) {
+  fetch(`${SB_URL}/rest/v1/tierplay_public_ladders?slug=eq.${encodeURIComponent(stege)}&limit=1`,
+    { headers:{ apikey:SB_KEY, Authorization:'Bearer '+SB_KEY } })
+    .then(r => r.ok ? r.json() : []).then(rows => {
+      if (!rows.length) return;
+      const d = rows[0];
+      document.getElementById('joining').style.display = 'flex';
+      document.getElementById('joinCrest').textContent = initials(d.ladder_name);
+      document.getElementById('joinCrest').style.background =
+        `linear-gradient(100deg, ${d.brand_primary||'#1FBF6B'}, ${d.brand_secondary||'#A8E92E'})`;
+      document.getElementById('joinName').textContent = 'Du går med i ' + d.ladder_name;
+      document.getElementById('joinClub').textContent = d.club_name + (d.location ? ' · ' + d.location : '');
+    }).catch(()=>{});
+}
+
+document.getElementById('signupForm').addEventListener('submit', async ev => {
+  ev.preventDefault();
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const pw = document.getElementById('pw').value;
+  const msg = document.getElementById('msg');
+  const btn = document.getElementById('btn');
+  msg.className = 'msg'; msg.textContent = '';
+
+  if (pw.length < 8) { msg.className='msg err'; msg.textContent='Lösenordet måste vara minst 8 tecken.'; return; }
+  btn.disabled = true; btn.textContent = 'Skapar konto…';
+
+  try {
+    const res = await fetch(`${SB_URL}/auth/v1/signup`, {
+      method:'POST',
+      headers:{ apikey:SB_KEY, 'Content-Type':'application/json' },
+      body: JSON.stringify({ email, password: pw, data: { name, phone } })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      msg.className='msg err';
+      msg.textContent = /already|registered/i.test(data.msg || data.error_description || '')
+        ? 'Den adressen har redan ett konto — logga in istället.'
+        : (data.msg || 'Kunde inte skapa kontot. Försök igen.');
+      btn.disabled = false; btn.textContent = 'Skapa konto';
+      return;
+    }
+
+    // Fick vi en session direkt kan vi spara profilen på en gång
+    if (data.access_token) {
+      localStorage.setItem('tp_session', JSON.stringify({
+        access_token: data.access_token, refresh_token: data.refresh_token,
+        email, expires_at: Date.now() + (data.expires_in||3600)*1000
+      }));
+      await saveProfile(data.access_token, data.user.id, { email, name, phone });
+      if (stege) await joinLadder(data.access_token, data.user.id, stege);
+      location.href = '/min-sida.html';
+      return;
+    }
+
+    // Annars väntar mejlbekräftelsen
+    sessionStorage.setItem('tp_pending', JSON.stringify({ name, phone, stege }));
+    document.getElementById('form-wrap').classList.add('hidden');
+    document.getElementById('done-wrap').classList.add('on');
+    document.getElementById('doneTitle').textContent = 'Kolla din mejl';
+    document.getElementById('doneText').textContent =
+      `Vi har skickat en bekräftelse till ${email}. Klicka på länken i mejlet så är kontot klart — sen loggar du in och ser dina stegar.`;
+  } catch(e) {
+    msg.className='msg err'; msg.textContent='Något gick fel — försök igen.';
+    btn.disabled = false; btn.textContent = 'Skapa konto';
+  }
+});
+
+async function saveProfile(token, id, p){
+  await fetch(`${SB_URL}/rest/v1/tierplay_players`, {
+    method:'POST',
+    headers:{ apikey:SB_KEY, Authorization:'Bearer '+token, 'Content-Type':'application/json',
+              Prefer:'resolution=merge-duplicates,return=minimal' },
+    body: JSON.stringify({ id, email: p.email, name: p.name, phone: p.phone || null })
+  }).catch(()=>{});
+}
+
+async function joinLadder(token, playerId, slug){
+  try {
+    const r = await fetch(`${SB_URL}/rest/v1/tierplay_public_ladders?slug=eq.${encodeURIComponent(slug)}&select=id`,
+      { headers:{ apikey:SB_KEY, Authorization:'Bearer '+token } });
+    const rows = await r.json();
+    if (!rows.length) return;
+    await fetch(`${SB_URL}/rest/v1/tierplay_memberships`, {
+      method:'POST',
+      headers:{ apikey:SB_KEY, Authorization:'Bearer '+token, 'Content-Type':'application/json', Prefer:'return=minimal' },
+      body: JSON.stringify({ player_id: playerId, ladder_id: rows[0].id, status:'pending' })
+    });
+  } catch(e){}
+}
+</script>
+</body>
+</html>
