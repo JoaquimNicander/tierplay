@@ -64,7 +64,10 @@
       <label for="email">E-post</label>
       <input type="email" id="email" placeholder="din@mejladress.se" autocomplete="email" required>
 
-      <label for="password">Lösenord</label>
+      <label for="password" style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+        <span>Lösenord</span>
+        <a href="#" id="forgot" style="text-transform:none;letter-spacing:0;font-weight:400;font-size:12.5px;color:var(--brand2)">Glömt lösenordet?</a>
+      </label>
       <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" required>
 
       <button class="btn" type="submit" id="btn">Logga in</button>
@@ -112,6 +115,32 @@ if (stege) {
       document.title = `Logga in — ${d.ladder_name}`;
     }).catch(()=>{});
 }
+
+document.getElementById('forgot').addEventListener('click', async ev => {
+  ev.preventDefault();
+  const email = document.getElementById('email').value.trim();
+  const msg = document.getElementById('msg');
+  if (!email) {
+    msg.className = 'msg err';
+    msg.textContent = 'Fyll i din e-postadress först, så skickar vi en återställningslänk.';
+    document.getElementById('email').focus();
+    return;
+  }
+  msg.className = 'msg'; msg.textContent = 'Skickar…';
+  try {
+    await fetch(`${SB_URL}/auth/v1/recover`, {
+      method: 'POST',
+      headers: { apikey: SB_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, options: { redirect_to: location.origin + '/valj-losenord.html' } })
+    });
+    // Avslöjar aldrig om adressen finns eller inte
+    msg.className = 'msg ok';
+    msg.textContent = 'Finns adressen hos oss är en återställningslänk på väg. Kolla inkorgen (och skräpposten).';
+  } catch (e) {
+    msg.className = 'msg err';
+    msg.textContent = 'Kunde inte skicka just nu — försök igen om en stund.';
+  }
+});
 
 document.getElementById('loginForm').addEventListener('submit', async ev => {
   ev.preventDefault();
