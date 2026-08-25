@@ -104,8 +104,8 @@
 </div>
 
 <script>
-const SB_URL = "https://xfzgkjapfauqdzvussbz.supabase.co";
-const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhmemdramFwZmF1cWR6dnVzc2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwOTEzNTAsImV4cCI6MjEwMDY2NzM1MH0.vxwgXzksOa_EXPL4QIWwufVezAFbGcyzPqeFubRdVkQ";
+const SB_URL = "https://uybdduafhzedhkdzqahn.supabase.co";
+const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV5YmRkdWFmaHplZGhrZHpxYWhuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2MDYwMDksImV4cCI6MjEwMzE4MjAwOX0.g-wyA3uePq8-cMOWGtr0g7O_yOk0XeJ22_E5vH5KV-I";
 
 const qp = new URLSearchParams(location.search);
 const stege = qp.get('stege');
@@ -160,6 +160,15 @@ document.getElementById('signupForm').addEventListener('submit', async ev => {
       msg.textContent = /already|registered/i.test(data.msg || data.error_description || '')
         ? 'Den adressen har redan ett konto — logga in istället.'
         : (data.msg || 'Kunde inte skapa kontot. Försök igen.');
+      btn.disabled = false; btn.textContent = 'Skapa konto';
+      return;
+    }
+
+    // Supabase svarar "ok" även för en adress som redan finns (för att inte avslöja vilka som är
+    // registrerade) — men skickar då inget mejl. Tom identities-lista är signalen.
+    if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
+      msg.className = 'msg err';
+      msg.innerHTML = 'Den här adressen har redan ett konto. <a href="/login.html" style="color:var(--brand2)">Logga in</a> istället — eller använd <a href="/login.html" style="color:var(--brand2)">Glömt lösenordet</a>.';
       btn.disabled = false; btn.textContent = 'Skapa konto';
       return;
     }

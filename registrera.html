@@ -247,8 +247,8 @@
 <footer>tierplay.se · © 2026 Tierplay · <a href="mailto:hej@tierplay.se" style="color:var(--clay2)">hej@tierplay.se</a></footer>
 
 <script>
-  const SB_URL = "https://xfzgkjapfauqdzvussbz.supabase.co";
-  const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhmemdramFwZmF1cWR6dnVzc2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwOTEzNTAsImV4cCI6MjEwMDY2NzM1MH0.vxwgXzksOa_EXPL4QIWwufVezAFbGcyzPqeFubRdVkQ";
+  const SB_URL = "https://uybdduafhzedhkdzqahn.supabase.co";
+  const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV5YmRkdWFmaHplZGhrZHpxYWhuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2MDYwMDksImV4cCI6MjEwMzE4MjAwOX0.g-wyA3uePq8-cMOWGtr0g7O_yOk0XeJ22_E5vH5KV-I";
 
   const TYPE_LABELS = { vanlig: "Vanlig stege", sommar: "Sommarstege", pool: "Poolspel" };
   let state = { play_type: null, sports: [] };
@@ -327,10 +327,23 @@
     try {
       const res = await fetch(SB_URL + '/rest/v1/tierplay_ladders', {
         method: 'POST',
-        headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+        headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
         body: JSON.stringify(payload)
       });
       if (!res.ok) throw new Error('HTTP ' + res.status);
+
+      // Skicka notis + bekräftelsemejl (blockerar inte bekräftelsesidan)
+      try {
+        const rows = await res.json();
+        const newId = rows && rows[0] && rows[0].id;
+        if (newId) {
+          fetch(SB_URL + '/functions/v1/tierplay-notify', {
+            method: 'POST',
+            headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: newId })
+          }).catch(function(){});
+        }
+      } catch(e) {}
 
       // Skicka bekräftelse-/inloggningsmejl till kontaktpersonen
       try {

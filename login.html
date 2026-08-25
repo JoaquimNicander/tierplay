@@ -88,8 +88,8 @@
 </div>
 
 <script>
-const SB_URL = "https://xfzgkjapfauqdzvussbz.supabase.co";
-const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhmemdramFwZmF1cWR6dnVzc2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwOTEzNTAsImV4cCI6MjEwMDY2NzM1MH0.vxwgXzksOa_EXPL4QIWwufVezAFbGcyzPqeFubRdVkQ";
+const SB_URL = "https://uybdduafhzedhkdzqahn.supabase.co";
+const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV5YmRkdWFmaHplZGhrZHpxYWhuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2MDYwMDksImV4cCI6MjEwMzE4MjAwOX0.g-wyA3uePq8-cMOWGtr0g7O_yOk0XeJ22_E5vH5KV-I";
 
 const params = new URLSearchParams(location.search);
 const stege = params.get('stege');
@@ -128,10 +128,11 @@ document.getElementById('forgot').addEventListener('click', async ev => {
   }
   msg.className = 'msg'; msg.textContent = 'Skickar…';
   try {
-    await fetch(`${SB_URL}/auth/v1/recover`, {
+    const redirect = encodeURIComponent(location.origin + '/valj-losenord.html');
+    await fetch(`${SB_URL}/auth/v1/recover?redirect_to=${redirect}`, {
       method: 'POST',
       headers: { apikey: SB_KEY, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, options: { redirect_to: location.origin + '/valj-losenord.html' } })
+      body: JSON.stringify({ email })
     });
     // Avslöjar aldrig om adressen finns eller inte
     msg.className = 'msg ok';

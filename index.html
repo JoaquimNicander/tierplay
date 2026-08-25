@@ -272,6 +272,17 @@
     section{padding:72px 0}
   }
 </style>
+<script>
+// Kommer man hit med en inloggnings- eller återställningslänk (t.ex. om avsändaren
+// saknar redirect) skickas man vidare till rätt sida med token intakt.
+(function(){
+  var h = location.hash || '';
+  if (h.indexOf('access_token=') === -1 && h.indexOf('error_description=') === -1) return;
+  var type = (h.match(/[#&]type=([^&]+)/) || [])[1] || '';
+  var dest = (type === 'recovery' || type === 'invite') ? '/valj-losenord.html' : '/min-sida.html';
+  location.replace(dest + h);
+})();
+</script>
 </head>
 <body>
 
@@ -551,8 +562,8 @@
   document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
   // Intresseanmälan: sparas direkt i Tierplays databas (Supabase).
-  const SB_URL = "https://xfzgkjapfauqdzvussbz.supabase.co";
-  const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhmemdramFwZmF1cWR6dnVzc2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwOTEzNTAsImV4cCI6MjEwMDY2NzM1MH0.vxwgXzksOa_EXPL4QIWwufVezAFbGcyzPqeFubRdVkQ";
+  const SB_URL = "https://uybdduafhzedhkdzqahn.supabase.co";
+  const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV5YmRkdWFmaHplZGhrZHpxYWhuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2MDYwMDksImV4cCI6MjEwMzE4MjAwOX0.g-wyA3uePq8-cMOWGtr0g7O_yOk0XeJ22_E5vH5KV-I";
   document.getElementById('signup-form').addEventListener('submit', async function(ev){
     ev.preventDefault();
     const email = document.getElementById('signup-email').value.trim();
