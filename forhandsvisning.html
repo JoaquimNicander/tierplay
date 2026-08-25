@@ -1,0 +1,216 @@
+<title>Tierplay idag</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Archivo+Black&display=swap">
+
+<style>
+  :root{
+    --bg:#0B1120; --bg2:#0F1730; --panel:#16203A; --line:rgba(235,242,250,.13);
+    --ink:#F0F5FA; --muted:#94A3BC;
+    --brand:#1FBF6B; --brand2:#A8E92E; --blue:#3E7BFA;
+    --grad:linear-gradient(100deg,#1FBF6B,#A8E92E);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:'Archivo',system-ui,-apple-system,sans-serif;
+    font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+
+  /* banner */
+  .banner{background:rgba(62,123,250,.14);border-bottom:1px solid rgba(62,123,250,.3);padding:11px 0}
+  .banner .wrap{display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:14px;color:#9CC3FF}
+  .banner b{color:var(--ink)}
+
+  /* nav */
+  .topnav{border-bottom:1px solid var(--line);background:var(--bg2)}
+  .topnav .wrap{height:64px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .logo{display:flex;align-items:center;gap:10px;font-family:'Archivo Black',sans-serif;font-size:19px;text-transform:uppercase;letter-spacing:.03em}
+  .who{font-size:13.5px;color:var(--muted)}
+
+  header{padding:42px 0 8px}
+  h1{font-family:'Archivo Black',sans-serif;font-size:clamp(28px,4.6vw,40px);text-transform:uppercase;margin:0 0 8px}
+  .lead{color:var(--muted);margin:0}
+
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:26px 0 0}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+  .stat b{display:block;font-family:'Archivo Black',sans-serif;font-size:27px;line-height:1.1}
+  .stat span{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+  @media(max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+  section{padding:30px 0}
+  .sechead{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:16px;flex-wrap:wrap}
+  h2{font-family:'Archivo Black',sans-serif;font-size:20px;text-transform:uppercase;margin:0}
+  .sechead p{color:var(--muted);font-size:14px;margin:0}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin-bottom:14px}
+  .ladtop{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap}
+  .crest{width:44px;height:44px;min-width:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+    font-family:'Archivo Black',sans-serif;font-size:15px;color:#2a0f06}
+  .ladmain{flex:1;min-width:220px}
+  .ladname{font-family:'Archivo Black',sans-serif;font-size:19px;text-transform:uppercase}
+  .ladsub{font-size:14px;color:var(--muted)}
+  .pills{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+  .pill{font-size:11.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:5px 11px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+  .pill.on{background:rgba(31,191,107,.18);border-color:transparent;color:var(--brand2)}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:999px;font-weight:600;font-size:14px;
+    background:var(--grad);color:#08260f;border:none;font-family:inherit}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+  .kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:18px;padding-top:16px;border-top:1px dashed var(--line)}
+  .kv div{font-size:14px}
+  .kv span{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+  .url{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;color:var(--brand2);word-break:break-all}
+
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:var(--panel)}
+  table{width:100%;border-collapse:collapse;min-width:460px}
+  th,td{text-align:left;padding:13px 18px;font-size:14.5px;border-bottom:1px solid var(--line)}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);background:rgba(235,242,250,.03)}
+  tr:last-child td{border-bottom:none}
+  .empty{color:var(--muted);text-align:center;padding:30px}
+  .role{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px;
+    background:rgba(168,233,46,.18);color:var(--brand2)}
+
+  .inviterow{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:18px;opacity:.75}
+  .inviterow .fld{flex:1;min-width:160px}
+  .inviterow label{display:block;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .fake{width:100%;background:rgba(235,242,250,.05);border:1.5px solid var(--line);border-radius:10px;
+    padding:11px 14px;color:var(--muted);font-size:15px}
+
+  .sys{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+  .syscard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:block}
+  .syscard:hover{border-color:var(--brand)}
+  .syscard b{display:block;font-family:'Archivo Black',sans-serif;font-size:14px;text-transform:uppercase;margin-bottom:5px}
+  .syscard span{font-size:13.5px;color:var(--muted);display:block}
+  .syscard .ext{font-size:12px;color:var(--brand2);margin-top:9px;display:block}
+
+  .built{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:34px 0;margin-top:20px}
+  .built ul{margin:0;padding-left:20px;columns:2;column-gap:34px}
+  .built li{margin-bottom:9px;color:var(--muted);break-inside:avoid}
+  .built li b{color:var(--ink)}
+  @media(max-width:720px){.built ul{columns:1}}
+
+  footer{padding:28px 0;color:var(--muted);font-size:13px;text-align:center}
+</style>
+
+<div class="banner">
+  <div class="wrap">
+    <span>👁️ <b>Förhandsvisning</b> — så här ser adminvyn ut när du loggat in. Riktig data, ingen inloggning, inget går att ändra härifrån.</span>
+  </div>
+</div>
+
+<div class="topnav">
+  <div class="wrap">
+    <span class="logo">
+      <svg viewBox="0 0 92 68" width="24" height="18" aria-hidden="true"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2E63E7"/><stop offset="100%" stop-color="#4E9BFA"/></linearGradient></defs><rect x="0" y="0" width="64" height="16" rx="8" fill="url(#g)"/><rect x="0" y="26" width="46" height="16" rx="8" fill="#3E7BFA" opacity=".62"/><rect x="0" y="52" width="30" height="16" rx="8" fill="#3E7BFA" opacity=".34"/><circle cx="78" cy="8" r="9" fill="#C6F532"/></svg>
+      Tierplay
+    </span>
+    <span class="who">joaquim@cxdesign.se · Logga ut</span>
+  </div>
+</div>
+
+<header class="wrap">
+  <h1>Mina stegar</h1>
+  <p class="lead">Superadmin — alla stegar, anmälningar och användare.</p>
+  <div class="stats">
+    <div class="stat"><b>1</b><span>Stegar</span></div>
+    <div class="stat"><b>1</b><span>Publicerade</span></div>
+    <div class="stat"><b>0</b><span>Väntar på start</span></div>
+    <div class="stat"><b>0</b><span>Anmälningar</span></div>
+  </div>
+</header>
+
+<section class="wrap">
+  <div class="sechead"><h2>Stegar</h2><p>Publicera för att göra stegsidan synlig på tierplay.se</p></div>
+
+  <div class="card">
+    <div class="ladtop">
+      <div class="crest" style="background:linear-gradient(100deg,#E8552F,#FF9F45)">LC</div>
+      <div class="ladmain">
+        <div class="ladname">Ladys Cup</div>
+        <div class="ladsub">Båstad Tennisklubb · Båstad · registrerad 11 aug 2026</div>
+        <div class="pills">
+          <span class="pill">Poolspel</span>
+          <span class="pill">Tennis</span>
+          <span class="pill on">Publicerad</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:9px;flex-wrap:wrap">
+        <a class="btn ghost" href="https://tierplay.se/ladys-cup" target="_blank" rel="noopener">Visa sidan ↗</a>
+        <span class="btn">Avpublicera</span>
+      </div>
+    </div>
+    <div class="kv">
+      <div><span>Adress</span><span class="url">tierplay.se/ladys-cup</span></div>
+      <div><span>Kontakt</span>testare</div>
+      <div><span>E-post</span><span style="color:var(--brand2)">test@test.se</span></div>
+      <div><span>Telefon</span><span style="color:var(--brand2)">0720787845</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="sechead"><h2>Anmälningar &amp; intresse</h2></div>
+  <div class="tablewrap"><table><tr><td class="empty">Inga anmälningar ännu.</td></tr></table></div>
+</section>
+
+<section class="wrap">
+  <div class="sechead"><h2>Användare</h2><p>Bjud in någon — de sätter sitt eget lösenord via länken</p></div>
+  <div class="card">
+    <div class="inviterow">
+      <div class="fld"><label>E-post</label><div class="fake">namn@klubben.se</div></div>
+      <div class="fld" style="max-width:180px"><label>Namn</label><div class="fake">För- och efternamn</div></div>
+      <div class="fld" style="max-width:150px"><label>Roll</label><div class="fake">Admin</div></div>
+      <span class="btn">Bjud in</span>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <tr><th>Namn / e-post</th><th>Roll</th><th>Status</th></tr>
+        <tr>
+          <td><b>Joaquim Nicander</b><br><span style="color:var(--muted)">joaquim@cxdesign.se</span></td>
+          <td><span class="role">Superadmin</span></td>
+          <td>Aktiv · senast 17 aug 2026</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="sechead"><h2>Systemen</h2><p>Genvägar till tjänsterna Tierplay vilar på</p></div>
+  <div class="sys">
+    <a class="syscard" href="https://supabase.com/dashboard/project/xfzgkjapfauqdzvussbz/editor" target="_blank" rel="noopener">
+      <b>Databasen</b><span>Stegar, anmälningar, användare</span><span class="ext">Öppna Table Editor ↗</span></a>
+    <a class="syscard" href="https://supabase.com/dashboard/project/xfzgkjapfauqdzvussbz/functions" target="_blank" rel="noopener">
+      <b>Funktioner</b><span>Mejlnotiser och användarhantering</span><span class="ext">Öppna Edge Functions ↗</span></a>
+    <a class="syscard" href="https://resend.com/emails" target="_blank" rel="noopener">
+      <b>Mejlen</b><span>Utskick, loggar och avsändardomäner</span><span class="ext">Öppna Resend ↗</span></a>
+    <a class="syscard" href="https://github.com/JoaquimNicander/tierplay" target="_blank" rel="noopener">
+      <b>Sajten</b><span>Källkoden till tierplay.se</span><span class="ext">Öppna GitHub ↗</span></a>
+    <a class="syscard" href="https://admin.websupport.se/sv/dns/15946259/records" target="_blank" rel="noopener">
+      <b>Domänen</b><span>DNS och e-post för tierplay.se</span><span class="ext">Öppna Websupport ↗</span></a>
+    <a class="syscard" href="https://supabase.com/dashboard/project/fueggdqtgmvldjbhcdfn/editor" target="_blank" rel="noopener">
+      <b>Båstadstegen</b><span>Förlagan — egen databas</span><span class="ext">Öppna Supabase ↗</span></a>
+  </div>
+</section>
+
+<div class="built">
+  <div class="wrap">
+    <h2 style="margin-bottom:16px">Det här byggdes idag</h2>
+    <ul>
+      <li><b>Publika stegsidor</b> på tierplay.se/&lt;namn&gt; med klubbens egna färger — <a href="https://tierplay.se/ladys-cup" target="_blank" rel="noopener" style="color:var(--brand2)">se Ladys Cup ↗</a></li>
+      <li><b>Inloggning</b> på tierplay.se/login.html, profilerad efter stegen man kom ifrån</li>
+      <li><b>Adminvyn</b> du tittar på nu — stegar, kontaktuppgifter, publicera-knapp</li>
+      <li><b>Användarhantering</b> med två roller och inbjudan via engångslänk</li>
+      <li><b>Sätt-ditt-lösenord-sida</b> som inbjudningslänken landar på</li>
+      <li><b>Glömt lösenordet</b> på inloggningen</li>
+      <li><b>Mejlnotiser</b> vid ny registrering — väntar på Resend-nyckeln</li>
+      <li><b>Morgonbevakning</b> kl 08 som pushar nya registreringar till dig</li>
+      <li><b>Hela Båstadstegens logik</b> inläst och dokumenterad som spec</li>
+    </ul>
+  </div>
+</div>
+
+<footer>Tierplay · förhandsvisning av adminvyn · 25 aug 2026</footer>
